@@ -1,0 +1,1 @@
+// this is an interface implemented by ing.ts

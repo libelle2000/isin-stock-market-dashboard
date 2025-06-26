@@ -1,0 +1,3 @@
+//this is an endpoint that will be used to update the isin stock data of a given ISIN in inputData/stockData/cache
+// it gets the ISIN from the request body, and calls fetchStockDataByIsin() of stockMarketService.ts to update the stock data for the given ISIN
+// it returns a 200 OK response with ISIN in JSON response body if the stock data was updated successfully, or a 500 Error JSON response with error details in response body 

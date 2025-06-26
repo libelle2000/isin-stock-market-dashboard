@@ -1,0 +1,1 @@
+//this is just a value object for the ISIN
