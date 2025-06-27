@@ -1,4 +1,11 @@
-import { dinero, Dinero, toDecimal, Currency } from 'dinero.js';
+import { dinero, Dinero, toDecimal } from 'dinero.js';
+
+// Define a simple currency object that matches the structure expected by dinero.js
+interface SimpleCurrency {
+  code: string;
+  base: number;
+  exponent: number;
+}
 
 /**
  * Immutable value object representing a monetary amount with currency
@@ -19,10 +26,18 @@ export class Money {
 
     // Convert to cents (dinero.js works with minor units)
     const amountInCents = Math.round(amount * 100);
-    
+
+    // Create a simple currency object
+    const currencyObj: SimpleCurrency = {
+      code: currency,
+      base: 10,
+      exponent: 2
+    };
+
+    // Create dinero object with the specified currency
     this._amount = dinero({
       amount: amountInCents,
-      currency: currency as Currency<number>,
+      currency: currencyObj as any, // Type assertion to make TypeScript happy
       scale: 2
     });
   }
@@ -39,14 +54,22 @@ export class Money {
       throw new Error('Amount string cannot be empty');
     }
 
-    // Remove currency symbols and non-numeric characters except decimal point
-    const cleanValue = value
+    // Remove currency symbols and handle European number format (1.234,56)
+    let cleanValue = value
       .replace(/[€$£¥]/g, '')
-      .replace(/\s/g, '')
-      .replace(/,/g, '.');
+      .replace(/\s/g, '');
+
+    // Check if the value uses European format (comma as decimal separator)
+    if (cleanValue.includes(',') && cleanValue.includes('.')) {
+      // European format with thousands separator (e.g., 1.234,56)
+      cleanValue = cleanValue.replace(/\./g, '').replace(',', '.');
+    } else if (cleanValue.includes(',')) {
+      // Simple comma as decimal separator
+      cleanValue = cleanValue.replace(',', '.');
+    }
 
     const amount = parseFloat(cleanValue);
-    
+
     if (isNaN(amount)) {
       throw new Error(`Cannot parse amount from string: ${value}`);
     }
@@ -78,7 +101,7 @@ export class Money {
     if (this.currency !== other.currency) {
       throw new Error(`Cannot add different currencies: ${this.currency} and ${other.currency}`);
     }
-    
+
     return new Money(this.amount + other.amount, this.currency);
   }
 
@@ -92,7 +115,7 @@ export class Money {
     if (this.currency !== other.currency) {
       throw new Error(`Cannot subtract different currencies: ${this.currency} and ${other.currency}`);
     }
-    
+
     return new Money(this.amount - other.amount, this.currency);
   }
 
@@ -105,7 +128,7 @@ export class Money {
     if (isNaN(factor)) {
       throw new Error(`Invalid multiplication factor: ${factor}`);
     }
-    
+
     return new Money(this.amount * factor, this.currency);
   }
 
@@ -118,7 +141,7 @@ export class Money {
     if (!(other instanceof Money)) {
       return false;
     }
-    
+
     return this.amount === other.amount && this.currency === other.currency;
   }
 
