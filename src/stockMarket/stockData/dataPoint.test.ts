@@ -121,7 +121,7 @@ describe('DataPoint', () => {
       const dataPoint = new DataPoint(1594245600000, 30.275);
       const str = dataPoint.toString();
       
-      expect(str).toContain('2020-07-09');
+      expect(str).toContain('2020-07-08T22:00:00.000Z');
       expect(str).toContain('EUR 30.28');
     });
   });
