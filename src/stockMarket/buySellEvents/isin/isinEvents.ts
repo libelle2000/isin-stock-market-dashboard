@@ -1,6 +1,107 @@
-//- create an immutable collection for event objects (buyEvent.ts, sellEvent.ts) of an isin 
-//- implement as a TS class
-//- order all events by date and time - see TRADING_DATE and TRADING_TIME in ISIN-buy-sell-events.csv
-//- implement a getter to get the oldest event - see TRADING_DATE and TRADING_TIME in ISIN-buy-sell-events.csv
-//- implement a getter to get the latest event - see TRADING_DATE and TRADING_TIME in ISIN-buy-sell-events.csv
-//- implement a getter for the ISIN (see isin.ts)
+import { Isin } from '../../../shared/domainObjects/isin';
+import { Event } from './event/event';
+import { BuyEvent } from './event/buyEvent';
+import { SellEvent } from './event/sellEvent';
+
+/**
+ * Immutable collection of events for a specific ISIN
+ */
+export class IsinEvents {
+  private readonly _isin: Isin;
+  private readonly _events: ReadonlyArray<Event>;
+
+  /**
+   * Creates a new IsinEvents instance
+   * @param isin The ISIN
+   * @param events The events for this ISIN
+   * @throws Error if the events contain different ISINs
+   */
+  constructor(isin: Isin, events: Event[]) {
+    this._isin = isin;
+
+    // Validate that all events have the same ISIN
+    for (const event of events) {
+      if (!event.isin.equals(isin)) {
+        throw new Error(`Event with ISIN ${event.isin.value} does not match collection ISIN ${isin.value}`);
+      }
+    }
+
+    // Sort events by trading date and time
+    this._events = [...events].sort((a, b) => 
+      a.tradingDateTime.getTime() - b.tradingDateTime.getTime()
+    );
+  }
+
+  /**
+   * Returns the ISIN
+   */
+  get isin(): Isin {
+    return this._isin;
+  }
+
+  /**
+   * Returns all events
+   */
+  get events(): ReadonlyArray<Event> {
+    return this._events;
+  }
+
+  /**
+   * Returns the number of events
+   */
+  get count(): number {
+    return this._events.length;
+  }
+
+  /**
+   * Returns the oldest event (by trading date and time)
+   * @throws Error if there are no events
+   */
+  get oldestEvent(): Event {
+    if (this._events.length === 0) {
+      throw new Error(`No events found for ISIN ${this._isin.value}`);
+    }
+
+    return this._events[0];
+  }
+
+  /**
+   * Returns the latest event (by trading date and time)
+   * @throws Error if there are no events
+   */
+  get latestEvent(): Event {
+    if (this._events.length === 0) {
+      throw new Error(`No events found for ISIN ${this._isin.value}`);
+    }
+
+    return this._events[this._events.length - 1];
+  }
+
+  /**
+   * Returns all buy events
+   */
+  get buyEvents(): ReadonlyArray<BuyEvent> {
+    return this._events.filter(event => event instanceof BuyEvent) as BuyEvent[];
+  }
+
+  /**
+   * Returns all sell events
+   */
+  get sellEvents(): ReadonlyArray<SellEvent> {
+    return this._events.filter(event => event instanceof SellEvent) as SellEvent[];
+  }
+
+  /**
+   * Implements the iterable protocol to allow iterating over events
+   */
+  [Symbol.iterator](): Iterator<Event> {
+    return this._events[Symbol.iterator]();
+  }
+
+  /**
+   * Returns the string representation of the IsinEvents
+   */
+  toString(): string {
+    return `IsinEvents(${this._isin.toString()}, ${this._events.length} events)`;
+  }
+}
