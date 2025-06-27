@@ -1,1 +1,1 @@
-//this is just a value object for the ISIN
+//- create an immutable value object for the ISIN

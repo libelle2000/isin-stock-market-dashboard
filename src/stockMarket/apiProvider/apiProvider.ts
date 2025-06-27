@@ -1,1 +1,1 @@
-// this is an interface implemented by ing.ts
+// - create an interface to be implemented by ing.ts

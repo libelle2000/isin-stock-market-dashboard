@@ -1,2 +1,2 @@
-//create csv reader for a given file path
-//internally use a library if possible
+//- create csv reader for a given file path
+//- internally use native NodeJS modules or a library if possible
