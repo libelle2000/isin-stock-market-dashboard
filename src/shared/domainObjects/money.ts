@@ -82,16 +82,7 @@ export class Money {
     return new Money(value);
   }
 
-  /**
-   * Creates a Money instance from separate amount and currency values
-   * @param amount The numeric amount
-   * @param currency The currency code (default: 'EUR')
-   * @returns A new Money instance
-   */
-  static fromAmount(amount: number, currency: string = 'EUR'): Money {
-    return new Money(amount, currency);
-  }
-
+  //@todo check if fromAmount() and equals() are really needed
   /**
    * Checks if this Money equals another Money
    * @param other The other Money to compare with

@@ -77,26 +77,6 @@ describe('Money', () => {
     });
   });
 
-  describe('fromAmount', () => {
-    it('should create a Money instance with the specified amount and default currency', () => {
-      const money = Money.fromAmount(10.50);
-      expect(money.amount).toBe(10.50);
-      expect(money.currency).toBe('EUR');
-    });
-
-    it('should create a Money instance with the specified amount and currency', () => {
-      const money = Money.fromAmount(20.75, 'USD');
-      expect(money.amount).toBe(20.75);
-      expect(money.currency).toBe('USD');
-    });
-
-    it('should handle integer amounts', () => {
-      const money = Money.fromAmount(100);
-      expect(money.amount).toBe(100);
-      expect(money.currency).toBe('EUR');
-    });
-  });
-
   describe('equals', () => {
     it('should return true for equal Money objects', () => {
       const money1 = new Money('€10.50');
