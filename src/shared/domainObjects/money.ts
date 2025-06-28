@@ -10,7 +10,18 @@ export class Money {
    * @param value The string to parse (e.g., "€10.50", "$20", "15,75€")
    * @throws Error if the string cannot be parsed
    */
-  constructor(value: string) {
+  constructor(value: string | number, currency: string = 'EUR') {
+    // Handle number input
+    if (typeof value === 'number') {
+      if (isNaN(value)) {
+        throw new Error(`Invalid amount: ${value}`);
+      }
+      this._amount = value;
+      this._currency = currency;
+      return;
+    }
+
+    // Handle string input
     if (!value || typeof value !== 'string') {
       throw new Error('Input must be a non-empty string');
     }
@@ -69,21 +80,29 @@ export class Money {
   }
 
   /**
-   * Creates a Currency instance from separate amount and currency values
-   * @param amount The numeric amount
-   * @param currency The currency code (default: 'EUR')
-   * @returns A new Currency instance
+   * Creates a Money instance from a string representation
+   * @param value The string to parse (e.g., "€10.50", "$20", "15,75€")
+   * @returns A new Money instance
+   * @throws Error if the string cannot be parsed
    */
-  static fromAmount(amount: number, currency: string = 'EUR'): Money {
-    // Create a string and parse it to ensure consistent behavior
-    const value = `${amount} ${currency}`;
+  static fromString(value: string): Money {
     return new Money(value);
   }
 
   /**
-   * Checks if this Currency equals another Currency
-   * @param other The other Currency to compare with
-   * @returns true if the Currency objects are equal, false otherwise
+   * Creates a Money instance from separate amount and currency values
+   * @param amount The numeric amount
+   * @param currency The currency code (default: 'EUR')
+   * @returns A new Money instance
+   */
+  static fromAmount(amount: number, currency: string = 'EUR'): Money {
+    return new Money(amount, currency);
+  }
+
+  /**
+   * Checks if this Money equals another Money
+   * @param other The other Money to compare with
+   * @returns true if the Money objects are equal, false otherwise
    */
   equals(other: Money): boolean {
     if (!(other instanceof Money)) {
