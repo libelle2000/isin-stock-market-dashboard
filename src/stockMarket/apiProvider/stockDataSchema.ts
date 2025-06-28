@@ -67,17 +67,7 @@ export const stockDataSchema: JSONSchemaType<StockDataResponse> = {
  */
 export class StockDataSchema {
   private static ajv = new Ajv();
-  //@todo: fix this
-  private static validate = StockDataSchema.ajv.compile(stockDataSchema);
-
-  /**
-   * Validates stock data against the schema
-   * @param data The data to validate
-   * @returns true if the data is valid, false otherwise
-   */
-  static isValid(data: unknown): data is StockDataResponse {
-    return this.validate(data);
-  }
+  private static validation = StockDataSchema.ajv.compile(stockDataSchema);
 
   /**
    * Validates stock data against the schema and throws an error if invalid
@@ -85,8 +75,8 @@ export class StockDataSchema {
    * @throws Error if the data is invalid
    */
   static validate(data: unknown): asserts data is StockDataResponse {
-    if (!this.isValid(data)) {
-      throw new Error(`Invalid stock data: ${JSON.stringify(this.validate.errors)}`);
+    if (!this.validation(data)) {
+      throw new Error(`Invalid stock data: ${JSON.stringify(this.validation.errors)}`);
     }
   }
 }
