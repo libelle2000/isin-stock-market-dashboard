@@ -1,3 +1,5 @@
+import {Isin} from "../../shared/domainObjects/isin";
+
 /**
  * Interface for API providers that fetch stock data
  */
@@ -8,5 +10,5 @@ export interface ApiProvider {
    * @returns Promise that resolves to the raw JSON response from the API
    * @throws Error if the API call fails
    */
-  fetchStockData(isin: string): Promise<Record<string, any>>;
+  fetchStockData(isin: Isin): Promise<Record<string, any>>;
 }

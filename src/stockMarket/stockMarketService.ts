@@ -77,7 +77,7 @@ export class StockMarketService {
   async fetchStockDataByIsin(isin: Isin): Promise<void> {
     try {
       // 4.1 Fetch stock data from the API
-      const data = await this.apiProvider.fetchStockData(isin.value);
+      const data = await this.apiProvider.fetchStockData(isin);
 
       // 4.2 Validate the data against the schema
       StockDataSchema.validate(data);

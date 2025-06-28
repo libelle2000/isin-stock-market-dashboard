@@ -130,7 +130,7 @@ describe('StockMarketService', () => {
       expect(StockDataRepository.getStockDataByIsin).toHaveBeenCalledTimes(2);
       
       // Check that apiProvider.fetchStockData was called
-      expect(mockApiProvider.fetchStockData).toHaveBeenCalledWith(isin1.value);
+      expect(mockApiProvider.fetchStockData).toHaveBeenCalledWith(isin1);
       
       // Check that StockDataSchema.validate was called
       expect(StockDataSchema.validate).toHaveBeenCalledWith(mockResponse);
@@ -190,7 +190,7 @@ describe('StockMarketService', () => {
       await service.fetchStockDataByIsin(isin1);
       
       // Check that apiProvider.fetchStockData was called
-      expect(mockApiProvider.fetchStockData).toHaveBeenCalledWith(isin1.value);
+      expect(mockApiProvider.fetchStockData).toHaveBeenCalledWith(isin1);
       
       // Check that StockDataSchema.validate was called
       expect(StockDataSchema.validate).toHaveBeenCalledWith(mockResponse);
@@ -209,7 +209,7 @@ describe('StockMarketService', () => {
       );
       
       // Check that apiProvider.fetchStockData was called
-      expect(mockApiProvider.fetchStockData).toHaveBeenCalledWith(isin1.value);
+      expect(mockApiProvider.fetchStockData).toHaveBeenCalledWith(isin1);
       
       // Check that StockDataSchema.validate was not called
       expect(StockDataSchema.validate).not.toHaveBeenCalled();

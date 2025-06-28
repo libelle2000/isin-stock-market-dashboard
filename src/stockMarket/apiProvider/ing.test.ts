@@ -1,5 +1,6 @@
 import { Ing } from './ing';
 import { StockDataResponse } from './stockDataSchema';
+import {Isin} from "../../shared/domainObjects/isin";
 
 // Mock the global fetch function
 global.fetch = jest.fn();
@@ -37,7 +38,7 @@ describe('Ing', () => {
     });
     
     // Call the method
-    const result = await ing.fetchStockData('LU2090063327');
+    const result = await ing.fetchStockData(new Isin('LU2090063327'));
     
     // Check that fetch was called with the correct URL
     expect(global.fetch).toHaveBeenCalledWith(
@@ -57,8 +58,8 @@ describe('Ing', () => {
     });
     
     // Call the method and expect it to throw
-    await expect(ing.fetchStockData('INVALID')).rejects.toThrow(
-      'Failed to fetch stock data for ISIN INVALID: API call failed with status 404: Not Found'
+    await expect(ing.fetchStockData(new Isin('LU2090063327'))).rejects.toThrow(
+      'Failed to fetch stock data for ISIN LU2090063327: API call failed with status 404: Not Found'
     );
   });
   
@@ -67,7 +68,7 @@ describe('Ing', () => {
     (global.fetch as jest.Mock).mockRejectedValueOnce(new Error('Network error'));
     
     // Call the method and expect it to throw
-    await expect(ing.fetchStockData('LU2090063327')).rejects.toThrow(
+    await expect(ing.fetchStockData(new Isin('LU2090063327'))).rejects.toThrow(
       'Failed to fetch stock data for ISIN LU2090063327: Network error'
     );
   });
