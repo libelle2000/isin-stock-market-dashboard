@@ -4,7 +4,6 @@ import { StockDataSchema, StockDataResponse } from './apiProvider/stockDataSchem
 import { BuySellEventRepository } from './buySellEvents/buySellEventRepository';
 import { Events } from './buySellEvents/events';
 import { IsinEvents } from './buySellEvents/isin/isinEvents';
-import { Chart } from './charts/chart';
 import { Charts } from './charts';
 import { StockData } from './stockData/stockData';
 import { StockDataRepository } from './stockData/stockDataRepository';

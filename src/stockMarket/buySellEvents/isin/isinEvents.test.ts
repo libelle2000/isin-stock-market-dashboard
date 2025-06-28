@@ -1,5 +1,5 @@
 import { IsinEvents } from './isinEvents';
-import { Event, EventData, EventType } from './event/event';
+import { Event, EventData } from './event/event';
 import { BuyEvent } from './event/buyEvent';
 import { SellEvent } from './event/sellEvent';
 import { Isin } from '../../../shared/domainObjects/isin';

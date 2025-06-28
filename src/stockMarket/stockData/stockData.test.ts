@@ -1,5 +1,4 @@
 import { Isin } from '../../shared/domainObjects/isin';
-import { Money, Currency } from '../../shared/domainObjects/money';
 import { DataPoint } from './dataPoint';
 import { StockData } from './stockData';
 import { StockDataResponse } from '../apiProvider/stockDataSchema';

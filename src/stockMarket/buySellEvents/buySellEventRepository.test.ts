@@ -1,10 +1,6 @@
 import { BuySellEventRepository } from './buySellEventRepository';
 import { CsvReader } from '../../shared/csv/csvReader';
 import { Events } from './events';
-import { IsinEvents } from './isin/isinEvents';
-import { BuyEvent } from './isin/event/buyEvent';
-import { SellEvent } from './isin/event/sellEvent';
-import { EventType } from './isin/event/event';
 
 // Mock CsvReader
 jest.mock('../../shared/csv/csvReader');

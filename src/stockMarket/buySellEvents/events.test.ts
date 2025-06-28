@@ -1,8 +1,7 @@
 import { Events } from './events';
 import { IsinEvents } from './isin/isinEvents';
-import { Event, EventData } from './isin/event/event';
+import { EventData } from './isin/event/event';
 import { BuyEvent } from './isin/event/buyEvent';
-import { SellEvent } from './isin/event/sellEvent';
 import { Isin } from '../../shared/domainObjects/isin';
 
 describe('Events', () => {

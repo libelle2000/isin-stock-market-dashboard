@@ -1,8 +1,6 @@
 import { Event, EventData, EventType } from './event';
 import { BuyEvent } from './buyEvent';
 import { SellEvent } from './sellEvent';
-import { Isin } from '../../../../shared/domainObjects/isin';
-import { Money } from '../../../../shared/domainObjects/money';
 
 // Mock implementation of the abstract Event class for testing
 class TestEvent extends Event {

@@ -3,7 +3,6 @@ import { IsinEvents } from '../buySellEvents/isin/isinEvents';
 import { StockData } from '../stockData/stockData';
 import { DataPoint } from '../stockData/dataPoint';
 import { Chart } from './chart';
-import { Money, Currency } from '../../shared/domainObjects/money';
 
 describe('Chart', () => {
   const isin = new Isin('LU2090063327');
