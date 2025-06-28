@@ -85,32 +85,4 @@ export class StockData {
   get count(): number {
     return this._dataPoints.length;
   }
-
-  /**
-   * Checks if this StockData equals another StockData
-   * @param other The other StockData to compare with
-   * @returns true if the StockData objects are equal, false otherwise
-   * @todo is this needed?
-   */
-  equals(other: StockData): boolean {
-    if (!this._isin.equals(other._isin)) {
-      return false;
-    }
-
-    if (this._dataPoints.length !== other._dataPoints.length) {
-      return false;
-    }
-
-    for (let i = 0; i < this._dataPoints.length; i++) {
-      const thisPoint = this._dataPoints[i];
-      const otherPoint = other._dataPoints[i];
-
-      if (thisPoint.unixTimestamp !== otherPoint.unixTimestamp || 
-          thisPoint.price.amount !== otherPoint.price.amount) {
-        return false;
-      }
-    }
-
-    return true;
-  }
 }

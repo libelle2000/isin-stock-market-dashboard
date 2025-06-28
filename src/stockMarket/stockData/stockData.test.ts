@@ -100,15 +100,4 @@ describe('StockData', () => {
     expect(() => StockData.fromApiResponse(isin, invalidResponse2)).toThrow('Invalid API response: no instruments found');
     expect(() => StockData.fromApiResponse(isin, invalidResponse3)).toThrow('Invalid API response: no data found');
   });
-  
-  it('should correctly compare two StockData instances', () => {
-    const stockData1 = new StockData(isin, dataPoints);
-    const stockData2 = new StockData(isin, dataPoints);
-    const stockData3 = new StockData(isin, [dataPoints[0], dataPoints[1]]);
-    const stockData4 = new StockData(new Isin('GB0009895292'), dataPoints);
-    
-    expect(stockData1.equals(stockData2)).toBe(true);
-    expect(stockData1.equals(stockData3)).toBe(false);
-    expect(stockData1.equals(stockData4)).toBe(false);
-  });
 });

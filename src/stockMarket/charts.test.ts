@@ -56,36 +56,6 @@ describe('Charts', () => {
     expect(isins[1].value).toBe('GB0009895292');
   });
   
-  it('should get a chart by ISIN', () => {
-    const isin1 = new Isin('LU2090063327');
-    const isin2 = new Isin('GB0009895292');
-    const nonExistentIsin = new Isin('US0378331005');
-    
-    expect(charts.getByIsin(isin1)).toBe(chart1);
-    expect(charts.getByIsin(isin2)).toBe(chart2);
-    expect(charts.getByIsin(nonExistentIsin)).toBeUndefined();
-    
-    // Test with string ISIN
-    expect(charts.getByIsin('LU2090063327')).toBe(chart1);
-    expect(charts.getByIsin('GB0009895292')).toBe(chart2);
-    expect(charts.getByIsin('US0378331005')).toBeUndefined();
-  });
-  
-  it('should check if a chart exists for a given ISIN', () => {
-    const isin1 = new Isin('LU2090063327');
-    const isin2 = new Isin('GB0009895292');
-    const nonExistentIsin = new Isin('US0378331005');
-    
-    expect(charts.hasIsin(isin1)).toBe(true);
-    expect(charts.hasIsin(isin2)).toBe(true);
-    expect(charts.hasIsin(nonExistentIsin)).toBe(false);
-    
-    // Test with string ISIN
-    expect(charts.hasIsin('LU2090063327')).toBe(true);
-    expect(charts.hasIsin('GB0009895292')).toBe(true);
-    expect(charts.hasIsin('US0378331005')).toBe(false);
-  });
-  
   it('should be iterable', () => {
     const iteratedCharts: Chart[] = [];
     

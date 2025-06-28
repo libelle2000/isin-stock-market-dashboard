@@ -89,8 +89,6 @@ describe('StockMarketService', () => {
       // Check the result
       expect(result).toBeInstanceOf(Charts);
       expect(result.count).toBe(2);
-      expect(result.hasIsin(isin1)).toBe(true);
-      expect(result.hasIsin(isin2)).toBe(true);
     });
     
     it('should fetch stock data when not available in cache', async () => {
@@ -143,7 +141,6 @@ describe('StockMarketService', () => {
       // Check the result
       expect(result).toBeInstanceOf(Charts);
       expect(result.count).toBe(1);
-      expect(result.hasIsin(isin1)).toBe(true);
     });
     
     it('should handle errors when fetching stock data', async () => {
