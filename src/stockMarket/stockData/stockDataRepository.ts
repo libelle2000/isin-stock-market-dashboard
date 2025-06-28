@@ -4,6 +4,7 @@ import { JsonReader } from '../../shared/json/jsonReader';
 import { JsonWriter } from '../../shared/json/jsonWriter';
 import { StockData } from './stockData';
 import { StockDataResponse, StockDataSchema } from '../apiProvider/stockDataSchema';
+import { StockDataMapper } from './stockDataMapper';
 
 /**
  * Repository for stock data
@@ -35,7 +36,7 @@ export class StockDataRepository {
       StockDataSchema.validate(data);
 
       // Create a StockData object from the data
-      return StockData.fromApiResponse(isin, data);
+      return StockDataMapper.fromApiResponse(isin, data);
     } catch (error) {
       // If the file doesn't exist, return null
       if (error instanceof Error && error.message.includes('File not found')) {
