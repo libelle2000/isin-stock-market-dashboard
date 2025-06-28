@@ -58,13 +58,6 @@ describe('Chart', () => {
     expect(chart.earliestPrice).toBe(25.75);
   });
 
-  it('should calculate the price change percentage', () => {
-    const chart = new Chart(stockData, isinEvents);
-
-    // (30.24 - 25.75) / 25.75 * 100 = 17.4369...%
-    expect(chart.priceChangePercentage).toBeCloseTo(17.4369, 4);
-  });
-
   it('should throw when getting latest price with no data points', () => {
     // Create a StockData with no data points
     const emptyStockData = new StockData(isin, []);
@@ -79,13 +72,5 @@ describe('Chart', () => {
     const chart = new Chart(emptyStockData, isinEvents);
 
     expect(() => chart.earliestPrice).toThrow('No data points available');
-  });
-
-  it('should throw when calculating price change percentage with no data points', () => {
-    // Create a StockData with no data points
-    const emptyStockData = new StockData(isin, []);
-    const chart = new Chart(emptyStockData, isinEvents);
-
-    expect(() => chart.priceChangePercentage).toThrow('No data points available');
   });
 });

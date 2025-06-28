@@ -64,16 +64,4 @@ export class Chart {
   get earliestPrice(): number {
     return this._stockData.earliestDataPoint.price.amount;
   }
-
-  /**
-   * Returns the price change in percentage
-   * @throws Error if there are no data points
-   * @todo this is not needed -> the bar should show MARKET_VALUE instead
-   */
-  get priceChangePercentage(): number {
-    const earliest = this.earliestPrice;
-    const latest = this.latestPrice;
-
-    return ((latest - earliest) / earliest) * 100;
-  }
 }
