@@ -78,35 +78,6 @@ describe('DataPoint', () => {
     });
   });
 
-  describe('equals', () => {
-    it('should return true for equal DataPoints', () => {
-      const dataPoint1 = new DataPoint(1594245600000, 30.275);
-      const dataPoint2 = new DataPoint(1594245600000, 30.275);
-
-      expect(dataPoint1.equals(dataPoint2)).toBe(true);
-    });
-
-    it('should return false for DataPoints with different timestamps', () => {
-      const dataPoint1 = new DataPoint(1594245600000, 30.275);
-      const dataPoint2 = new DataPoint(1594332000000, 30.275);
-
-      expect(dataPoint1.equals(dataPoint2)).toBe(false);
-    });
-
-    it('should return false for DataPoints with different prices', () => {
-      const dataPoint1 = new DataPoint(1594245600000, 30.275);
-      const dataPoint2 = new DataPoint(1594245600000, 29.875);
-
-      expect(dataPoint1.equals(dataPoint2)).toBe(false);
-    });
-
-    it('should return false for non-DataPoint objects', () => {
-      const dataPoint = new DataPoint(1594245600000, 30.275);
-
-      expect(dataPoint.equals([1594245600000, 30.275] as any)).toBe(false);
-    });
-  });
-
   describe('toArray', () => {
     it('should return the DataPoint as an array', () => {
       const dataPoint = new DataPoint(1594245600000, 30.275);

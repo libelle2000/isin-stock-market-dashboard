@@ -147,23 +147,4 @@ export abstract class Event {
   get totalIncludingCosts(): Money {
     return this._totalIncludingCosts;
   }
-
-  /**
-   * Checks if this Event equals another Event
-   * @param other The other Event to compare with
-   * @returns true if the Events are equal, false otherwise
-   */
-  equals(other: Event): boolean {
-    if (!(other instanceof Event)) {
-      return false;
-    }
-
-    return this._type === other.type &&
-           this._isin.equals(other.isin) &&
-           this._stockName === other.stockName &&
-           this._nominaleCount === other.nominaleCount &&
-           this._stockPrice.equals(other.stockPrice) &&
-           this._tradingDateTime.getTime() === other.tradingDateTime.getTime() &&
-           this._totalIncludingCosts.equals(other.totalIncludingCosts);
-  }
 }

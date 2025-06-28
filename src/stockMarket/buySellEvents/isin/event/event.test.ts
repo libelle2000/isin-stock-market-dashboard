@@ -120,28 +120,6 @@ describe('Event', () => {
       expect(event.tradingDateTime.getTime()).toBe(originalTime);
     });
   });
-
-  describe('equals', () => {
-    it('should return true for equal Events', () => {
-      const event1 = new TestEvent(buyEventData);
-      const event2 = new TestEvent(buyEventData);
-      
-      expect(event1.equals(event2)).toBe(true);
-    });
-
-    it('should return false for Events with different properties', () => {
-      const event1 = new TestEvent(buyEventData);
-      const event2 = new TestEvent(sellEventData);
-      
-      expect(event1.equals(event2)).toBe(false);
-    });
-
-    it('should return false for non-Event objects', () => {
-      const event = new TestEvent(buyEventData);
-      
-      expect(event.equals(buyEventData as any)).toBe(false);
-    });
-  });
 });
 
 describe('BuyEvent', () => {

@@ -76,32 +76,4 @@ describe('Money', () => {
       expect(money.currency).toBe('USD');
     });
   });
-
-  describe('equals', () => {
-    it('should return true for equal Money objects', () => {
-      const money1 = new Money('€10.50');
-      const money2 = new Money('€10.50');
-      expect(money1.equals(money2)).toBe(true);
-    });
-
-    it('should return false for Money objects with different amounts', () => {
-      const money1 = new Money('€10.50');
-      const money2 = new Money('€10.51');
-      expect(money1.equals(money2)).toBe(false);
-    });
-
-    it('should return false for Money objects with different currencies', () => {
-      const money1 = new Money('€10.50');
-      const money2 = new Money('$10.50');
-      expect(money1.equals(money2)).toBe(false);
-    });
-
-    it('should return false for non-Money objects', () => {
-      const money = new Money('€10.50');
-      expect(money.equals(null as any)).toBe(false);
-      expect(money.equals(undefined as any)).toBe(false);
-      expect(money.equals({} as any)).toBe(false);
-      expect(money.equals('€10.50' as any)).toBe(false);
-    });
-  });
 });

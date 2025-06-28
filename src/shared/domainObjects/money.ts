@@ -81,17 +81,4 @@ export class Money {
   static fromString(value: string): Money {
     return new Money(value);
   }
-
-  //@todo check if fromAmount() and equals() are really needed
-  /**
-   * Checks if this Money equals another Money
-   * @param other The other Money to compare with
-   * @returns true if the Money objects are equal, false otherwise
-   */
-  equals(other: Money): boolean {
-    if (!(other instanceof Money)) {
-      return false;
-    }
-    return this._amount === other.amount && this._currency === other.currency;
-  }
 }

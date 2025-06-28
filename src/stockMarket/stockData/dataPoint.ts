@@ -74,20 +74,6 @@ export class DataPoint {
   }
 
   /**
-   * Checks if this DataPoint equals another DataPoint
-   * @param other The other DataPoint to compare with
-   * @returns true if the DataPoints are equal, false otherwise
-   */
-  equals(other: DataPoint): boolean {
-    if (!(other instanceof DataPoint)) {
-      return false;
-    }
-
-    return this.unixTimestamp === other.unixTimestamp && 
-           this._price.equals(other.price);
-  }
-
-  /**
    * Returns the DataPoint as an array [timestamp, price]
    * @returns Array containing [timestamp, price]
    */
