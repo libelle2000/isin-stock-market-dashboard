@@ -2,8 +2,8 @@
  * Currency enum for representing different currencies
  */
 export enum Currency {
-  EUR = 'EUR',
-  USD = 'USD'
+  EUR = '€',
+  USD = '$'
 }
 
 /**
@@ -25,9 +25,26 @@ export class Money {
         throw new Error(`Invalid amount: ${value}`);
       }
       this._amount = value;
-      this._currency = typeof currency === 'string' 
-        ? (currency === 'USD' ? Currency.USD : Currency.EUR) 
-        : currency;
+
+      // Handle currency input
+      if (typeof currency === 'string') {
+        // Convert string currency code to Currency enum
+        switch (currency) {
+          case 'USD':
+            this._currency = Currency.USD;
+            break;
+          case '$':
+            this._currency = Currency.USD;
+            break;
+          case 'EUR':
+          default:
+            this._currency = Currency.EUR;
+            break;
+        }
+      } else {
+        // Currency is already a Currency enum value
+        this._currency = currency;
+      }
       return;
     }
 
@@ -76,9 +93,9 @@ export class Money {
   }
 
   /**
-   * Returns the currency code (e.g., 'EUR', 'USD')
+   * Returns the currency symbol
    */
-  get currency(): Currency {
+  get currency(): string {
     return this._currency;
   }
 
