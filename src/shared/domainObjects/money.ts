@@ -1,17 +1,9 @@
-import { dinero, Dinero, toDecimal } from 'dinero.js';
-
-// Define a simple currency object that matches the structure expected by dinero.js
-interface SimpleCurrency {
-  code: string;
-  base: number;
-  exponent: number;
-}
-
 /**
  * Immutable value object representing a monetary amount with currency
  */
 export class Money {
-  private readonly _amount: Dinero<number>;
+  private readonly _amount: number;
+  private readonly _currency: string;
 
   /**
    * Creates a new Money instance
@@ -24,22 +16,9 @@ export class Money {
       throw new Error(`Invalid amount: ${amount}`);
     }
 
-    // Convert to cents (dinero.js works with minor units)
-    const amountInCents = Math.round(amount * 100);
-
-    // Create a simple currency object
-    const currencyObj: SimpleCurrency = {
-      code: currency,
-      base: 10,
-      exponent: 2
-    };
-
-    // Create dinero object with the specified currency
-    this._amount = dinero({
-      amount: amountInCents,
-      currency: currencyObj as any, // Type assertion to make TypeScript happy
-      scale: 2
-    });
+    // Round to nearest cent
+    this._amount = Math.round(amount * 100) / 100;
+    this._currency = currency;
   }
 
   /**
@@ -81,14 +60,14 @@ export class Money {
    * Returns the amount as a number
    */
   get amount(): number {
-    return parseFloat(toDecimal(this._amount));
+    return this._amount;
   }
 
   /**
    * Returns the currency code
    */
   get currency(): string {
-    return this._amount.toJSON().currency.code;
+    return this._currency;
   }
 
   /**
