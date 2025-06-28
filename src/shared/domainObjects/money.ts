@@ -76,7 +76,7 @@ export class Money {
    * Returns a formatted string representation of the currency
    */
   toString(): string {
-    return `${this._currency} ${this._amount.toFixed(2)}`;
+    return `${this._currency} ${this._amount}`;
   }
 
   /**

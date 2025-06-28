@@ -9,7 +9,7 @@ describe('DataPoint', () => {
       const dataPoint = new DataPoint(date, money);
 
       expect(dataPoint.timestamp).toEqual(date);
-      expect(dataPoint.price.amount).toBeCloseTo(30.275);
+      expect(dataPoint.price.amount).toBe(30.275);
       expect(dataPoint.price.currency).toBe('EUR');
     });
 
@@ -18,7 +18,7 @@ describe('DataPoint', () => {
       const dataPoint = new DataPoint(timestamp, 30.275);
 
       expect(dataPoint.unixTimestamp).toBe(timestamp);
-      expect(dataPoint.price.amount).toBeCloseTo(30.275);
+      expect(dataPoint.price.amount).toBe(30.275);
       expect(dataPoint.price.currency).toBe('EUR');
     });
 
@@ -41,7 +41,7 @@ describe('DataPoint', () => {
       const dataPoint = DataPoint.fromArray([1594245600000, 30.275]);
 
       expect(dataPoint.unixTimestamp).toBe(1594245600000);
-      expect(dataPoint.price.amount).toBeCloseTo(30.275);
+      expect(dataPoint.price.amount).toBe(30.275);
       expect(dataPoint.price.currency).toBe('EUR');
     });
 
@@ -73,7 +73,7 @@ describe('DataPoint', () => {
       const money = new Money(30.275);
       const dataPoint = new DataPoint(1594245600000, money);
 
-      expect(dataPoint.price.amount).toBeCloseTo(30.275);
+      expect(dataPoint.price.amount).toBe(30.275);
       expect(dataPoint.price.currency).toBe('EUR');
     });
   });
