@@ -3,3 +3,7 @@
 
 # Editors/IDEs
 .idea
+
+# Build and test artifacts
+/coverage/
+/node_modules/
