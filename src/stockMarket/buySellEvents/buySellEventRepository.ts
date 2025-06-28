@@ -1,11 +1,11 @@
 import path from 'path';
-import { CsvReader } from '../../shared/csv/csvReader';
-import { Events } from './events';
-import { IsinEvents } from './isin/isinEvents';
-import { Event, EventData, EventType } from './isin/event/event';
-import { BuyEvent } from './isin/event/buyEvent';
-import { SellEvent } from './isin/event/sellEvent';
-import { Isin } from '../../shared/domainObjects/isin';
+import {CsvReader} from '../../shared/csv/csvReader';
+import {Events} from './events';
+import {IsinEvents} from './isin/isinEvents';
+import {Event, EventData, EventType} from './isin/event/event';
+import {BuyEvent} from './isin/event/buyEvent';
+import {SellEvent} from './isin/event/sellEvent';
+import {Isin} from '../../shared/domainObjects/isin';
 
 /**
  * Repository for buy and sell events
@@ -79,7 +79,7 @@ export class BuySellEventRepository {
   private static convertToEventData(rawEvent: Record<string, string>): EventData {
     // Map CSV column names to EventData properties
     // The CSV might have different column names than our EventData interface
-    const eventData: EventData = {
+    return {
       TYPE: rawEvent.TYPE || '',
       ISIN: rawEvent.ISIN || '',
       STOCK_NAME: rawEvent.STOCK_NAME || '',
@@ -100,7 +100,5 @@ export class BuySellEventRepository {
       TOTAL_COSTS: rawEvent.TOTAL_COSTS || '',
       TOTAL_INCLUDING_COSTS: rawEvent.TOTAL_INCLUDING_COSTS || ''
     };
-
-    return eventData;
   }
 }

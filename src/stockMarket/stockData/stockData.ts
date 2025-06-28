@@ -93,10 +93,6 @@ export class StockData {
    * @todo is this needed?
    */
   equals(other: StockData): boolean {
-    if (!(other instanceof StockData)) {
-      return false;
-    }
-
     if (!this._isin.equals(other._isin)) {
       return false;
     }

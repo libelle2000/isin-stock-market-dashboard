@@ -48,7 +48,7 @@ export class Money {
    * @throws Error if the string cannot be parsed
    */
   static fromString(value: string): Money {
-    if (!value || typeof value !== 'string') {
+    if (!value) {
       throw new Error('Input must be a non-empty string');
     }
 
