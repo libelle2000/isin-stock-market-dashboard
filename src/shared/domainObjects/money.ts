@@ -53,13 +53,13 @@ export class Money {
     }
 
     // Detect currency symbol
-    let currency = Currency.EUR; // Default currency
+    let currency: Currency;
     if (value.includes('$')) {
       currency = Currency.USD;
     } else if (value.includes('€')) {
       currency = Currency.EUR;
     } else {
-      //@todo throw error
+      throw new Error('Currency symbol not found in input string');
     }
 
     // Create a regex pattern from all currency symbols in the enum

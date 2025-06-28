@@ -26,10 +26,8 @@ describe('Money', () => {
       expect(money.currency).toBe('$');
     });
 
-    it('should create a Money instance from a string without currency symbol', () => {
-      const money = Money.fromString('30.25');
-      expect(money.amount).toBe(30.25);
-      expect(money.currency).toBe('€'); // Default currency
+    it('should throw an error for a string without currency symbol', () => {
+      expect(() => Money.fromString('30.25')).toThrow('Currency symbol not found in input string');
     });
 
     it('should handle European number format with comma as decimal separator', () => {
@@ -66,7 +64,7 @@ describe('Money', () => {
     });
 
     it('should throw an error for unparseable amount', () => {
-      expect(() => Money.fromString('abc')).toThrow('Cannot parse amount from string');
+      expect(() => Money.fromString('abc')).toThrow('Currency symbol not found in input string');
       expect(() => Money.fromString('€abc')).toThrow('Cannot parse amount from string');
     });
   });
