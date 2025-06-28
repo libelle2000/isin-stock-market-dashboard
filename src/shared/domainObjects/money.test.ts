@@ -1,78 +1,84 @@
-import { Money } from './money';
+import { Money, Currency } from './money';
 
 describe('Money', () => {
   describe('constructor', () => {
+    it('should create a Money instance with amount and currency', () => {
+      const money = new Money(10.50, Currency.EUR);
+      expect(money.amount).toBe(10.50);
+      expect(money.currency).toBe('EUR');
+    });
+
+    it('should throw an error for invalid amount', () => {
+      expect(() => new Money(NaN, Currency.EUR)).toThrow('Invalid amount');
+    });
+  });
+
+  describe('fromString', () => {
     it('should create a Money instance from a string with Euro symbol', () => {
-      const money = new Money('€10.50');
+      const money = Money.fromString('€10.50');
       expect(money.amount).toBe(10.50);
       expect(money.currency).toBe('EUR');
     });
 
     it('should create a Money instance from a string with Dollar symbol', () => {
-      const money = new Money('$20.75');
+      const money = Money.fromString('$20.75');
       expect(money.amount).toBe(20.75);
       expect(money.currency).toBe('USD');
     });
 
     it('should create a Money instance from a string without currency symbol', () => {
-      const money = new Money('30.25');
+      const money = Money.fromString('30.25');
       expect(money.amount).toBe(30.25);
       expect(money.currency).toBe('EUR'); // Default currency
     });
 
     it('should handle European number format with comma as decimal separator', () => {
-      const money = new Money('€10,50');
+      const money = Money.fromString('€10,50');
       expect(money.amount).toBe(10.50);
       expect(money.currency).toBe('EUR');
     });
 
     it('should handle European number format with thousands separator', () => {
-      const money = new Money('€1.234,56');
+      const money = Money.fromString('€1.234,56');
       expect(money.amount).toBe(1234.56);
       expect(money.currency).toBe('EUR');
     });
 
     it('should handle currency symbol at the end', () => {
-      const money = new Money('10.50€');
+      const money = Money.fromString('10.50€');
       expect(money.amount).toBe(10.50);
       expect(money.currency).toBe('EUR');
     });
 
     it('should handle whitespace', () => {
-      const money = new Money(' € 10.50 ');
+      const money = Money.fromString(' € 10.50 ');
       expect(money.amount).toBe(10.50);
       expect(money.currency).toBe('EUR');
     });
 
     it('should throw an error for empty input', () => {
-      expect(() => new Money('')).toThrow('Input must be a non-empty string');
+      expect(() => Money.fromString('')).toThrow('Input must be a non-empty string');
     });
 
     it('should throw an error for null or undefined input', () => {
-      expect(() => new Money(null as any)).toThrow('Input must be a non-empty string');
-      expect(() => new Money(undefined as any)).toThrow('Input must be a non-empty string');
-    });
-
-    it('should accept number input', () => {
-      const money = new Money(123);
-      expect(money.amount).toBe(123);
-      expect(money.currency).toBe('EUR');
+      expect(() => Money.fromString(null as any)).toThrow('Input must be a non-empty string');
+      expect(() => Money.fromString(undefined as any)).toThrow('Input must be a non-empty string');
     });
 
     it('should throw an error for unparseable amount', () => {
-      expect(() => new Money('abc')).toThrow('Cannot parse amount from string');
-      expect(() => new Money('€abc')).toThrow('Cannot parse amount from string');
+      expect(() => Money.fromString('abc')).toThrow('Cannot parse amount from string');
+      expect(() => Money.fromString('€abc')).toThrow('Cannot parse amount from string');
     });
   });
 
   describe('getters', () => {
     it('should return the correct amount', () => {
-      const money = new Money('€10.50');
+      const money = Money.fromString('€10.50');
       expect(money.amount).toBe(10.50);
     });
 
     it('should return the correct currency', () => {
-      const money = new Money('$20.75');
+      const money = Money.fromString('$20.75');
       expect(money.currency).toBe('USD');
     });
   });

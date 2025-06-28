@@ -7,82 +7,24 @@ export enum Currency {
 }
 
 /**
- * Simple money class for parsing and representing monetary values
+ * Simple money class for representing monetary values
  */
 export class Money {
   private readonly _amount: number;
   private readonly _currency: Currency;
 
   /**
-   * Creates a new Money instance by parsing a string
-   * @param value The string to parse (e.g., "€10.50", "$20", "15,75€")
-   * @throws Error if the string cannot be parsed
+   * Creates a new Money instance
+   * @param amount The numeric amount
+   * @param currency The currency enum value
+   * @throws Error if the amount is invalid
    */
-  constructor(value: string | number, currency: string | Currency = Currency.EUR) {
-    // Handle number input
-    if (typeof value === 'number') {
-      if (isNaN(value)) {
-        throw new Error(`Invalid amount: ${value}`);
-      }
-      this._amount = value;
-
-      // Handle currency input
-      if (typeof currency === 'string') {
-        // Convert string currency code to Currency enum
-        switch (currency) {
-          case 'USD':
-            this._currency = Currency.USD;
-            break;
-          case '$':
-            this._currency = Currency.USD;
-            break;
-          case 'EUR':
-          default:
-            this._currency = Currency.EUR;
-            break;
-        }
-      } else {
-        // Currency is already a Currency enum value
-        this._currency = currency;
-      }
-      return;
-    }
-
-    // Handle string input
-    if (!value || typeof value !== 'string') {
-      throw new Error('Input must be a non-empty string');
-    }
-
-    // Detect currency symbol
-    this._currency = Currency.EUR; // Default currency
-    if (value.includes('$')) {
-      this._currency = Currency.USD;
-    } else if (value.includes('€')) {
-      this._currency = Currency.EUR;
-    }
-
-    // Remove currency symbols and whitespace
-    let cleanValue = value
-        .replace(/[€$]/g, '')
-        .replace(/\s/g, '');
-
-    // Handle European number format (comma as decimal separator)
-    if (cleanValue.includes(',') && cleanValue.includes('.')) {
-      // European format with thousands separator (e.g., 1.234,56)
-      cleanValue = cleanValue.replace(/\./g, '').replace(',', '.');
-    } else if (cleanValue.includes(',')) {
-      // Simple comma as decimal separator
-      cleanValue = cleanValue.replace(',', '.');
-    }
-
-    // Parse to number
-    const amount = parseFloat(cleanValue);
-
+  constructor(amount: number, currency: Currency) {
     if (isNaN(amount)) {
-      throw new Error(`Cannot parse amount from string: ${value}`);
+      throw new Error(`Invalid amount: ${amount}`);
     }
-
     this._amount = amount;
+    this._currency = currency;
   }
 
   /**
@@ -106,6 +48,41 @@ export class Money {
    * @throws Error if the string cannot be parsed
    */
   static fromString(value: string): Money {
-    return new Money(value);
+    if (!value || typeof value !== 'string') {
+      throw new Error('Input must be a non-empty string');
+    }
+
+    // Detect currency symbol
+    let currency = Currency.EUR; // Default currency
+    if (value.includes('$')) {
+      currency = Currency.USD;
+    } else if (value.includes('€')) {
+      currency = Currency.EUR;
+    } else {
+      //@todo throw error
+    }
+
+    // Remove currency symbols and whitespace
+    let cleanValue = value
+        .replace(/[€$]/g, '')
+        .replace(/\s/g, '');
+
+    // Handle European number format (comma as decimal separator)
+    if (cleanValue.includes(',') && cleanValue.includes('.')) {
+      // European format with thousands separator (e.g., 1.234,56)
+      cleanValue = cleanValue.replace(/\./g, '').replace(',', '.');
+    } else if (cleanValue.includes(',')) {
+      // Simple comma as decimal separator
+      cleanValue = cleanValue.replace(',', '.');
+    }
+
+    // Parse to number
+    const amount = parseFloat(cleanValue);
+
+    if (isNaN(amount)) {
+      throw new Error(`Cannot parse amount from string: ${value}`);
+    }
+
+    return new Money(amount, currency);
   }
 }

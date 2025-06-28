@@ -1,4 +1,4 @@
-import { Money } from '../../shared/domainObjects/money';
+import {Currency, Money} from '../../shared/domainObjects/money';
 
 /**
  * Immutable value object representing a single data point in stock data
@@ -31,7 +31,7 @@ export class DataPoint {
     if (price instanceof Money) {
       this._price = price;
     } else if (typeof price === 'number') {
-      this._price = new Money(price, 'EUR');
+      this._price = new Money(price, Currency.EUR);
     } else {
       throw new Error(`Invalid price type: ${typeof price}`);
     }

@@ -1,11 +1,11 @@
 import { DataPoint } from './dataPoint';
-import { Money } from '../../shared/domainObjects/money';
+import { Money, Currency } from '../../shared/domainObjects/money';
 
 describe('DataPoint', () => {
   describe('constructor', () => {
     it('should create a valid DataPoint with Date and Money', () => {
       const date = new Date('2020-07-09T00:00:00.000Z');
-      const money = new Money(30.275);
+      const money = new Money(30.275, Currency.EUR);
       const dataPoint = new DataPoint(date, money);
 
       expect(dataPoint.timestamp).toEqual(date);
@@ -70,7 +70,7 @@ describe('DataPoint', () => {
     });
 
     it('should return the price', () => {
-      const money = new Money(30.275);
+      const money = new Money(30.275, Currency.EUR);
       const dataPoint = new DataPoint(1594245600000, money);
 
       expect(dataPoint.price.amount).toBe(30.275);
