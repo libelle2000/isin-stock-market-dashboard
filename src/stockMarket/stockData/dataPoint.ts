@@ -49,7 +49,9 @@ export class DataPoint {
     }
 
     const [timestamp, price] = data;
-    return new DataPoint(timestamp, price);
+    const date = new Date(timestamp);
+    const money = new Money(price, Currency.EUR);
+    return new DataPoint(date, money);
   }
 
   /**
