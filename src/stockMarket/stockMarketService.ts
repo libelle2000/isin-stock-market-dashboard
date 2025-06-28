@@ -1,11 +1,91 @@
-//- create a TS class with one method that does following:
-//1. it calls buySellEventRepository.ts to get all buy and sell events
-//2. it iterates over all isin
-//3. for each isin, it calls stockDataRepository.ts to get stock data for the isin
-//4. if stock data is not available, 
-//4.1 it calls ing.ts (interface apiProvider.ts) to fetch stock data from the API 
-//4.2 validates the data against the JSON schema (stockDataSchema.ts)
-//4.3 and calls updateStockDataByIsin() of the stockDataRepository.ts with the new data
-//5. if stock data is available, it creates a chart.ts object and adds it to the charts.ts collection
-//- it has a second method "fetchStockDataByIsin()" with isin.ts as argument to just do step 4 from above:
-//- it calls ing.ts (interface apiProvider.ts) to fetch stock data from the API and calls updateStockDataByIsin() of the stockDataRepository.ts with the new data
+import { Isin } from '../shared/domainObjects/isin';
+import { ApiProvider } from './apiProvider/apiProvider';
+import { Ing } from './apiProvider/ing';
+import { StockDataSchema } from './apiProvider/stockDataSchema';
+import { BuySellEventRepository } from './buySellEvents/buySellEventRepository';
+import { Chart } from './charts/chart';
+import { Charts } from './charts';
+import { StockDataRepository } from './stockData/stockDataRepository';
+
+/**
+ * Service for managing stock market data and charts
+ */
+export class StockMarketService {
+  private readonly apiProvider: ApiProvider;
+
+  /**
+   * Creates a new StockMarketService instance
+   * @param apiProvider The API provider to use (defaults to Ing)
+   */
+  constructor(apiProvider: ApiProvider = new Ing()) {
+    this.apiProvider = apiProvider;
+  }
+
+  /**
+   * Gets all charts for all ISINs
+   * @returns Promise that resolves to a Charts collection
+   * @throws Error if there's an error fetching data
+   */
+  async getAllCharts(): Promise<Charts> {
+    try {
+      // 1. Get all buy and sell events
+      //@todo: is this static call a good idea? Rather use dependency injection!
+      const events = await BuySellEventRepository.getAllEvents();
+
+      // 2. Iterate over all ISINs
+      const charts: Chart[] = [];
+      for (const isin of events.isins) {
+        try {
+          // 3. Get stock data for the ISIN
+          //@todo: is this static call a good idea? Rather use dependency injection!
+          let stockData = await StockDataRepository.getStockDataByIsin(isin);
+
+          // 4. If stock data is not available, fetch it from the API
+          if (!stockData) {
+            await this.fetchStockDataByIsin(isin);
+            stockData = await StockDataRepository.getStockDataByIsin(isin);
+
+            // If still null after fetching, skip this ISIN
+            if (!stockData) {
+              console.error(`Failed to fetch stock data for ISIN ${isin.value}`);
+              continue;
+            }
+          }
+
+          // 5. Create a chart and add it to the collection
+          const isinEvents = events.getByIsin(isin);
+          if (isinEvents) {
+            charts.push(new Chart(stockData, isinEvents));
+          }
+        } catch (error) {
+          console.error(`Error processing ISIN ${isin.value}: ${error instanceof Error ? error.message : String(error)}`);
+        }
+      }
+
+      return new Charts(charts);
+    } catch (error) {
+      throw new Error(`Error getting charts: ${error instanceof Error ? error.message : String(error)}`);
+    }
+  }
+
+  /**
+   * Fetches stock data for a given ISIN from the API and updates the cache
+   * @param isin The ISIN to fetch data for
+   * @returns Promise that resolves when the data has been fetched and cached
+   * @throws Error if there's an error fetching or caching the data
+   */
+  async fetchStockDataByIsin(isin: Isin): Promise<void> {
+    try {
+      // 4.1 Fetch stock data from the API
+      const data = await this.apiProvider.fetchStockData(isin.value);
+
+      // 4.2 Validate the data against the schema
+      StockDataSchema.validate(data);
+
+      // 4.3 Update the cache
+      await StockDataRepository.updateStockDataByIsin(isin, data);
+    } catch (error) {
+      throw new Error(`Error fetching stock data for ISIN ${isin.value}: ${error instanceof Error ? error.message : String(error)}`);
+    }
+  }
+}
