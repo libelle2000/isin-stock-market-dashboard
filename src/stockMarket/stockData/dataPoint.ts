@@ -10,31 +10,12 @@ export class DataPoint {
 
   /**
    * Creates a new DataPoint instance
-   * @param timestamp The timestamp as a Date object or Unix timestamp (milliseconds)
-   * @param price The stock price as a Money object or number (EUR)
-   * @throws Error if the timestamp or price is invalid
+   * @param timestamp The timestamp as a Date object
+   * @param price The stock price as a Money object
    */
-  constructor(timestamp: Date | number, price: Money | number) {
-    // Handle timestamp
-    if (timestamp instanceof Date) {
-      this._timestamp = new Date(timestamp.getTime());
-    } else if (typeof timestamp === 'number') {
-      if (isNaN(timestamp) || timestamp <= 0) {
-        throw new Error(`Invalid timestamp: ${timestamp}`);
-      }
-      this._timestamp = new Date(timestamp);
-    } else {
-      throw new Error(`Invalid timestamp type: ${typeof timestamp}`);
-    }
-
-    // Handle price
-    if (price instanceof Money) {
-      this._price = price;
-    } else if (typeof price === 'number') {
-      this._price = new Money(price, Currency.EUR);
-    } else {
-      throw new Error(`Invalid price type: ${typeof price}`);
-    }
+  constructor(timestamp: Date, price: Money) {
+    this._timestamp = new Date(timestamp.getTime());
+    this._price = price;
   }
 
   /**
@@ -73,13 +54,5 @@ export class DataPoint {
    */
   get price(): Money {
     return this._price;
-  }
-
-  /**
-   * Returns the DataPoint as an array [timestamp, price]
-   * @returns Array containing [timestamp, price]
-   */
-  toArray(): [number, number] {
-    return [this.unixTimestamp, this._price.amount];
   }
 }

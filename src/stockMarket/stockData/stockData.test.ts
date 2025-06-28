@@ -1,14 +1,15 @@
-import { Isin } from '../../shared/domainObjects/isin';
-import { DataPoint } from './dataPoint';
-import { StockData } from './stockData';
-import { StockDataResponse } from '../apiProvider/stockDataSchema';
+import {Isin} from '../../shared/domainObjects/isin';
+import {DataPoint} from './dataPoint';
+import {StockData} from './stockData';
+import {StockDataResponse} from '../apiProvider/stockDataSchema';
+import {Currency, Money} from "../../shared/domainObjects/money";
 
 describe('StockData', () => {
   const isin = new Isin('LU2090063327');
   const dataPoints = [
-    new DataPoint(1594245600000, 30.275),
-    new DataPoint(1594332000000, 29.875),
-    new DataPoint(1594591200000, 30.24)
+    new DataPoint(new Date(1594245600000), new Money(30.275, Currency.EUR)),
+    new DataPoint(new Date(1594332000000), new Money(29.875, Currency.EUR)),
+    new DataPoint(new Date(1594591200000), new Money(30.24, Currency.EUR))
   ];
   
   it('should create a StockData instance', () => {
@@ -22,9 +23,9 @@ describe('StockData', () => {
   it('should sort data points by timestamp', () => {
     // Create data points in random order
     const unsortedDataPoints = [
-      new DataPoint(1594591200000, 30.24),
-      new DataPoint(1594245600000, 30.275),
-      new DataPoint(1594332000000, 29.875)
+      new DataPoint(new Date(1594591200000), new Money(30.24, Currency.EUR)),
+      new DataPoint(new Date(1594245600000), new Money(30.275, Currency.EUR)),
+      new DataPoint(new Date(1594332000000), new Money(29.875, Currency.EUR))
     ];
     
     const stockData = new StockData(isin, unsortedDataPoints);

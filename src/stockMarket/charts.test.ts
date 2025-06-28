@@ -4,6 +4,7 @@ import { StockData } from './stockData/stockData';
 import { DataPoint } from './stockData/dataPoint';
 import { Chart } from './charts/chart';
 import { Charts } from './charts';
+import {Currency, Money} from "../shared/domainObjects/money";
 
 describe('Charts', () => {
   let chart1: Chart;
@@ -17,15 +18,15 @@ describe('Charts', () => {
     
     // Create StockData objects
     const stockData1 = new StockData(isin1, [
-      new DataPoint(1594245600000, 25.75),
-      new DataPoint(1594332000000, 29.875),
-      new DataPoint(1594591200000, 30.24)
+      new DataPoint(new Date(1594245600000), new Money(25.75, Currency.EUR)),
+      new DataPoint(new Date(1594332000000), new Money(29.875, Currency.EUR)),
+      new DataPoint(new Date(1594591200000), new Money(30.24, Currency.EUR))
     ]);
     
     const stockData2 = new StockData(isin2, [
-      new DataPoint(1594245600000, 34.75),
-      new DataPoint(1594332000000, 35.56),
-      new DataPoint(1594591200000, 34.25)
+      new DataPoint(new Date(1594245600000), new Money(34.75, Currency.EUR)),
+      new DataPoint(new Date(1594332000000), new Money(35.56, Currency.EUR)),
+      new DataPoint(new Date(1594591200000), new Money(34.25, Currency.EUR))
     ]);
     
     // Create IsinEvents objects

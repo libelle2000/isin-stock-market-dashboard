@@ -13,26 +13,14 @@ describe('DataPoint', () => {
       expect(dataPoint.price.currency).toBe('€');
     });
 
-    it('should create a valid DataPoint with timestamp and number', () => {
-      const timestamp = 1594245600000; // 2020-07-09T00:00:00.000Z
-      const dataPoint = new DataPoint(timestamp, 30.275);
+    it('should create a valid DataPoint with Date and Money', () => {
+      const date = new Date(1594245600000); // 2020-07-09T00:00:00.000Z
+      const money = new Money(30.275, Currency.EUR);
+      const dataPoint = new DataPoint(date, money);
 
-      expect(dataPoint.unixTimestamp).toBe(timestamp);
+      expect(dataPoint.unixTimestamp).toBe(date.getTime());
       expect(dataPoint.price.amount).toBe(30.275);
       expect(dataPoint.price.currency).toBe('€');
-    });
-
-    it('should throw an error for invalid timestamp', () => {
-      expect(() => new DataPoint(NaN, 30.275)).toThrow('Invalid timestamp');
-      expect(() => new DataPoint(-1, 30.275)).toThrow('Invalid timestamp');
-    });
-
-    it('should throw an error for invalid timestamp type', () => {
-      expect(() => new DataPoint('invalid' as any, 30.275)).toThrow('Invalid timestamp type');
-    });
-
-    it('should throw an error for invalid price type', () => {
-      expect(() => new DataPoint(1594245600000, 'invalid' as any)).toThrow('Invalid price type');
     });
   });
 
@@ -55,7 +43,7 @@ describe('DataPoint', () => {
   describe('getters', () => {
     it('should return a copy of the timestamp', () => {
       const date = new Date('2020-07-09T00:00:00.000Z');
-      const dataPoint = new DataPoint(date, 30.275);
+      const dataPoint = new DataPoint(date, new Money(30.275, Currency.EUR));
 
       const returnedDate = dataPoint.timestamp;
       expect(returnedDate).toEqual(date);
@@ -63,27 +51,20 @@ describe('DataPoint', () => {
     });
 
     it('should return the unix timestamp', () => {
-      const timestamp = 1594245600000;
-      const dataPoint = new DataPoint(timestamp, 30.275);
+      const date = new Date(1594245600000);
+      const money = new Money(30.275, Currency.EUR);
+      const dataPoint = new DataPoint(date, money);
 
-      expect(dataPoint.unixTimestamp).toBe(timestamp);
+      expect(dataPoint.unixTimestamp).toBe(date.getTime());
     });
 
     it('should return the price', () => {
+      const date = new Date(1594245600000);
       const money = new Money(30.275, Currency.EUR);
-      const dataPoint = new DataPoint(1594245600000, money);
+      const dataPoint = new DataPoint(date, money);
 
       expect(dataPoint.price.amount).toBe(30.275);
       expect(dataPoint.price.currency).toBe('€');
-    });
-  });
-
-  describe('toArray', () => {
-    it('should return the DataPoint as an array', () => {
-      const dataPoint = new DataPoint(1594245600000, 30.275);
-      const array = dataPoint.toArray();
-
-      expect(array).toEqual([1594245600000, 30.275]);
     });
   });
 });
