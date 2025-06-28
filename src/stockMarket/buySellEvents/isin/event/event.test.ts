@@ -33,28 +33,6 @@ describe('Event', () => {
     TOTAL_INCLUDING_COSTS: '€1.574,82'
   };
 
-  const sellEventData: EventData = {
-    TYPE: 'sell',
-    ISIN: 'GB0009895292',
-    STOCK_NAME: 'AstraZeneca PLC',
-    NOMINALE_COUNT: '9',
-    STOCK_PRICE: '€123,20',
-    TRADING_DATE: '2022-04-27',
-    TRADING_TIME: '8:00:02',
-    MARKET_VALUE: '€1.108,80',
-    FACTOR_USD_TO_EUR: '1',
-    STOCK_PRICE_EUR: '€1.108,80',
-    CAPITAL_TAX: '',
-    CHURCH_TAX: '',
-    SOLIDARITY_TAX: '',
-    COURTAGE: '',
-    STOCK_FEE: '',
-    PROVISION: '-€7,67',
-    VARIABLE_TRANSACTION_FEE: '',
-    TOTAL_COSTS: '-€7,67',
-    TOTAL_INCLUDING_COSTS: '€1.101,13'
-  };
-
   describe('constructor', () => {
     it('should create a valid Event object', () => {
       const event = new TestEvent(buyEventData);

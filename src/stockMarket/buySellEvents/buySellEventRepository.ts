@@ -15,14 +15,13 @@ export class BuySellEventRepository {
 
   /**
    * Gets all buy and sell events from the CSV file
-   * @param csvPath Optional path to the CSV file (default: inputData/buySellEvents/ISIN-buy-sell-events.csv)
    * @returns Promise that resolves to an Events collection
    * @throws Error if the CSV file cannot be read or parsed
    */
-  static async getAllEvents(csvPath: string = BuySellEventRepository.DEFAULT_CSV_PATH): Promise<Events> {
+  static async getAllEvents(): Promise<Events> {
     try {
       // Read the CSV file
-      const rawEvents = await CsvReader.readCsv<Record<string, string>>(csvPath);
+      const rawEvents = await CsvReader.readCsv<Record<string, string>>(BuySellEventRepository.DEFAULT_CSV_PATH);
 
       // Convert raw events to Event objects
       const events: Event[] = [];

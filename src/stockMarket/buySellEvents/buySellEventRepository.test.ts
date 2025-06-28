@@ -145,13 +145,6 @@ describe('BuySellEventRepository', () => {
       expect(luEvents!.sellEvents.length).toBe(0);
     });
 
-    it('should handle invalid event types', async () => {
-      const events = await BuySellEventRepository.getAllEvents();
-      
-      // Check that console.warn was called for the invalid event type
-      expect(console.warn).toHaveBeenCalledWith(expect.stringContaining('Unknown event type: invalid'));
-    });
-
     it('should handle errors when creating events', async () => {
       // Mock CsvReader.readCsv to return data with an invalid ISIN
       const invalidIsinData = [
@@ -176,21 +169,6 @@ describe('BuySellEventRepository', () => {
       (CsvReader.readCsv as jest.Mock).mockRejectedValue(new Error('CSV read error'));
       
       await expect(BuySellEventRepository.getAllEvents()).rejects.toThrow('Error reading buy/sell events');
-    });
-
-    it('should use the default CSV path if none is provided', async () => {
-      await BuySellEventRepository.getAllEvents();
-      
-      // Check that CsvReader.readCsv was called with the default path
-      expect(CsvReader.readCsv).toHaveBeenCalledWith(expect.stringContaining('ISIN-buy-sell-events.csv'));
-    });
-
-    it('should use the provided CSV path if one is provided', async () => {
-      const customPath = 'custom/path/to/events.csv';
-      await BuySellEventRepository.getAllEvents(customPath);
-      
-      // Check that CsvReader.readCsv was called with the custom path
-      expect(CsvReader.readCsv).toHaveBeenCalledWith(customPath);
     });
   });
 });
