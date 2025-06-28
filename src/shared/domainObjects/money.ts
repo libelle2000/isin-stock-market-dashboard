@@ -62,9 +62,13 @@ export class Money {
       //@todo throw error
     }
 
+    // Create a regex pattern from all currency symbols in the enum
+    const currencySymbols = Object.values(Currency).join('');
+    const currencyRegex = new RegExp(`[${currencySymbols}]`, 'g');
+
     // Remove currency symbols and whitespace
     let cleanValue = value
-        .replace(/[€$]/g, '')
+        .replace(currencyRegex, '')
         .replace(/\s/g, '');
 
     // Handle European number format (comma as decimal separator)
