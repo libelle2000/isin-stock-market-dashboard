@@ -1,44 +1,34 @@
 /**
- * Immutable value object representing a monetary amount with currency
+ * Simple money class for parsing and representing monetary values
  */
 export class Money {
   private readonly _amount: number;
   private readonly _currency: string;
 
   /**
-   * Creates a new Money instance
-   * @param amount The amount as a number
-   * @param currency The currency code (default: EUR)
-   * @throws Error if the amount is invalid
-   */
-  constructor(amount: number, currency: string = 'EUR') {
-    if (isNaN(amount)) {
-      throw new Error(`Invalid amount: ${amount}`);
-    }
-
-    // Round to nearest cent
-    this._amount = Math.round(amount * 100) / 100;
-    this._currency = currency;
-  }
-
-  /**
-   * Creates a Money instance from a string representation
-   * @param value The string value (e.g., "€10.50" or "10.50")
-   * @param currency The currency code (default: EUR)
-   * @returns A new Money instance
+   * Creates a new Money instance by parsing a string
+   * @param value The string to parse (e.g., "€10.50", "$20", "15,75€")
    * @throws Error if the string cannot be parsed
    */
-  static fromString(value: string, currency: string = 'EUR'): Money {
-    if (!value) {
-      throw new Error('Amount string cannot be empty');
+  constructor(value: string) {
+    if (!value || typeof value !== 'string') {
+      throw new Error('Input must be a non-empty string');
     }
 
-    // Remove currency symbols and handle European number format (1.234,56)
-    let cleanValue = value
-      .replace(/[€$£¥]/g, '')
-      .replace(/\s/g, '');
+    // Detect currency symbol
+    this._currency = 'EUR'; // Default currency
+    if (value.includes('$')) {
+      this._currency = 'USD';
+    } else if (value.includes('€')) {
+      this._currency = 'EUR';
+    }
 
-    // Check if the value uses European format (comma as decimal separator)
+    // Remove currency symbols and whitespace
+    let cleanValue = value
+        .replace(/[€$]/g, '')
+        .replace(/\s/g, '');
+
+    // Handle European number format (comma as decimal separator)
     if (cleanValue.includes(',') && cleanValue.includes('.')) {
       // European format with thousands separator (e.g., 1.234,56)
       cleanValue = cleanValue.replace(/\./g, '').replace(',', '.');
@@ -47,87 +37,58 @@ export class Money {
       cleanValue = cleanValue.replace(',', '.');
     }
 
+    // Parse to number
     const amount = parseFloat(cleanValue);
 
     if (isNaN(amount)) {
       throw new Error(`Cannot parse amount from string: ${value}`);
     }
 
-    return new Money(amount, currency);
+    this._amount = amount;
   }
 
   /**
-   * Returns the amount as a number
+   * Returns the numeric amount
    */
   get amount(): number {
     return this._amount;
   }
 
   /**
-   * Returns the currency code
+   * Returns the currency code (e.g., 'EUR', 'USD')
    */
   get currency(): string {
     return this._currency;
   }
 
   /**
-   * Adds another Money object to this one
-   * @param other The Money object to add
-   * @returns A new Money object with the sum
-   * @throws Error if currencies don't match
+   * Returns a formatted string representation of the currency
    */
-  add(other: Money): Money {
-    if (this.currency !== other.currency) {
-      throw new Error(`Cannot add different currencies: ${this.currency} and ${other.currency}`);
-    }
-
-    return new Money(this.amount + other.amount, this.currency);
+  toString(): string {
+    return `${this._currency} ${this._amount.toFixed(2)}`;
   }
 
   /**
-   * Subtracts another Money object from this one
-   * @param other The Money object to subtract
-   * @returns A new Money object with the difference
-   * @throws Error if currencies don't match
+   * Creates a Currency instance from separate amount and currency values
+   * @param amount The numeric amount
+   * @param currency The currency code (default: 'EUR')
+   * @returns A new Currency instance
    */
-  subtract(other: Money): Money {
-    if (this.currency !== other.currency) {
-      throw new Error(`Cannot subtract different currencies: ${this.currency} and ${other.currency}`);
-    }
-
-    return new Money(this.amount - other.amount, this.currency);
+  static fromAmount(amount: number, currency: string = 'EUR'): Money {
+    // Create a string and parse it to ensure consistent behavior
+    const value = `${amount} ${currency}`;
+    return new Money(value);
   }
 
   /**
-   * Multiplies this Money object by a factor
-   * @param factor The multiplication factor
-   * @returns A new Money object with the product
-   */
-  multiply(factor: number): Money {
-    if (isNaN(factor)) {
-      throw new Error(`Invalid multiplication factor: ${factor}`);
-    }
-
-    return new Money(this.amount * factor, this.currency);
-  }
-
-  /**
-   * Checks if this Money equals another Money
-   * @param other The other Money to compare with
-   * @returns true if the Money objects are equal, false otherwise
+   * Checks if this Currency equals another Currency
+   * @param other The other Currency to compare with
+   * @returns true if the Currency objects are equal, false otherwise
    */
   equals(other: Money): boolean {
     if (!(other instanceof Money)) {
       return false;
     }
-
-    return this.amount === other.amount && this.currency === other.currency;
-  }
-
-  /**
-   * Returns the string representation of the Money
-   */
-  toString(): string {
-    return `${this.currency} ${this.amount.toFixed(2)}`;
+    return this._amount === other.amount && this._currency === other.currency;
   }
 }
