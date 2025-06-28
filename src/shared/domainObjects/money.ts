@@ -1,23 +1,33 @@
 /**
+ * Currency enum for representing different currencies
+ */
+export enum Currency {
+  EUR = 'EUR',
+  USD = 'USD'
+}
+
+/**
  * Simple money class for parsing and representing monetary values
  */
 export class Money {
   private readonly _amount: number;
-  private readonly _currency: string;
+  private readonly _currency: Currency;
 
   /**
    * Creates a new Money instance by parsing a string
    * @param value The string to parse (e.g., "€10.50", "$20", "15,75€")
    * @throws Error if the string cannot be parsed
    */
-  constructor(value: string | number, currency: string = 'EUR') {
+  constructor(value: string | number, currency: string | Currency = Currency.EUR) {
     // Handle number input
     if (typeof value === 'number') {
       if (isNaN(value)) {
         throw new Error(`Invalid amount: ${value}`);
       }
       this._amount = value;
-      this._currency = currency;
+      this._currency = typeof currency === 'string' 
+        ? (currency === 'USD' ? Currency.USD : Currency.EUR) 
+        : currency;
       return;
     }
 
@@ -27,11 +37,11 @@ export class Money {
     }
 
     // Detect currency symbol
-    this._currency = 'EUR'; // Default currency
+    this._currency = Currency.EUR; // Default currency
     if (value.includes('$')) {
-      this._currency = 'USD';
+      this._currency = Currency.USD;
     } else if (value.includes('€')) {
-      this._currency = 'EUR';
+      this._currency = Currency.EUR;
     }
 
     // Remove currency symbols and whitespace
@@ -68,7 +78,7 @@ export class Money {
   /**
    * Returns the currency code (e.g., 'EUR', 'USD')
    */
-  get currency(): string {
+  get currency(): Currency {
     return this._currency;
   }
 
