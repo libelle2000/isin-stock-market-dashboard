@@ -29,7 +29,6 @@ export class StockMarketService {
   async getAllCharts(): Promise<Charts> {
     try {
       // 1. Get all buy and sell events
-      //@todo: is this static call a good idea? Rather use dependency injection!
       const events = await BuySellEventRepository.getAllEvents();
 
       // 2. Iterate over all ISINs
@@ -37,7 +36,6 @@ export class StockMarketService {
       for (const isin of events.isins) {
         try {
           // 3. Get stock data for the ISIN
-          //@todo: is this static call a good idea? Rather use dependency injection!
           let stockData = await StockDataRepository.getStockDataByIsin(isin);
 
           // 4. If stock data is not available, fetch it from the API
