@@ -66,13 +66,13 @@ describe('Event', () => {
       expect(event.stockName).toBe('AstraZeneca PLC');
       expect(event.nominaleCount).toBe(12);
       expect(event.stockPrice.amount).toBeCloseTo(130.5);
-      expect(event.stockPrice.currency).toBe('EUR');
+      expect(event.stockPrice.currency).toBe('€');
       
       const expectedDate = new Date(2024, 11, 4, 8, 16, 11);
       expect(event.tradingDateTime.getTime()).toBe(expectedDate.getTime());
       
       expect(event.totalIncludingCosts.amount).toBeCloseTo(1574.82);
-      expect(event.totalIncludingCosts.currency).toBe('EUR');
+      expect(event.totalIncludingCosts.currency).toBe('€');
     });
 
     it('should throw an error for invalid event type', () => {

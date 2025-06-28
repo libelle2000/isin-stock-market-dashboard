@@ -10,7 +10,7 @@ describe('DataPoint', () => {
 
       expect(dataPoint.timestamp).toEqual(date);
       expect(dataPoint.price.amount).toBe(30.275);
-      expect(dataPoint.price.currency).toBe('EUR');
+      expect(dataPoint.price.currency).toBe('€');
     });
 
     it('should create a valid DataPoint with timestamp and number', () => {
@@ -19,7 +19,7 @@ describe('DataPoint', () => {
 
       expect(dataPoint.unixTimestamp).toBe(timestamp);
       expect(dataPoint.price.amount).toBe(30.275);
-      expect(dataPoint.price.currency).toBe('EUR');
+      expect(dataPoint.price.currency).toBe('€');
     });
 
     it('should throw an error for invalid timestamp', () => {
@@ -42,7 +42,7 @@ describe('DataPoint', () => {
 
       expect(dataPoint.unixTimestamp).toBe(1594245600000);
       expect(dataPoint.price.amount).toBe(30.275);
-      expect(dataPoint.price.currency).toBe('EUR');
+      expect(dataPoint.price.currency).toBe('€');
     });
 
     it('should throw an error for invalid array', () => {
@@ -74,7 +74,7 @@ describe('DataPoint', () => {
       const dataPoint = new DataPoint(1594245600000, money);
 
       expect(dataPoint.price.amount).toBe(30.275);
-      expect(dataPoint.price.currency).toBe('EUR');
+      expect(dataPoint.price.currency).toBe('€');
     });
   });
 
