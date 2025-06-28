@@ -94,11 +94,4 @@ export class DataPoint {
   toArray(): [number, number] {
     return [this.unixTimestamp, this._price.amount];
   }
-
-  /**
-   * Returns the string representation of the DataPoint
-   */
-  toString(): string {
-    return `[${this._timestamp.toISOString()}, ${this._price.toString()}]`;
-  }
 }

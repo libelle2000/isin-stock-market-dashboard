@@ -142,19 +142,6 @@ describe('Event', () => {
       expect(event.equals(buyEventData as any)).toBe(false);
     });
   });
-
-  describe('toString', () => {
-    it('should return the string representation of the Event', () => {
-      const event = new TestEvent(buyEventData);
-      const str = event.toString();
-      
-      expect(str).toContain('buy');
-      expect(str).toContain('12');
-      expect(str).toContain('AstraZeneca PLC');
-      expect(str).toContain('GB0009895292');
-      expect(str).toContain('EUR 130.50');
-    });
-  });
 });
 
 describe('BuyEvent', () => {

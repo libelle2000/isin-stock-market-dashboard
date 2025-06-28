@@ -73,13 +73,6 @@ export class Money {
   }
 
   /**
-   * Returns a formatted string representation of the currency
-   */
-  toString(): string {
-    return `${this._currency} ${this._amount}`;
-  }
-
-  /**
    * Creates a Money instance from a string representation
    * @param value The string to parse (e.g., "€10.50", "$20", "15,75€")
    * @returns A new Money instance

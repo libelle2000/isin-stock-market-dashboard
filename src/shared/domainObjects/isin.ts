@@ -65,11 +65,4 @@ export class Isin {
     }
     return this._value === other.value;
   }
-
-  /**
-   * Returns the string representation of the ISIN
-   */
-  toString(): string {
-    return this._value;
-  }
 }

@@ -52,11 +52,4 @@ describe('Isin', () => {
       expect(isin.equals('GB0009895292' as any)).toBe(false);
     });
   });
-
-  describe('toString', () => {
-    it('should return the string representation of the ISIN', () => {
-      const isin = new Isin('GB0009895292');
-      expect(isin.toString()).toBe('GB0009895292');
-    });
-  });
 });

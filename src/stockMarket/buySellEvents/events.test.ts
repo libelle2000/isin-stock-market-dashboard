@@ -132,13 +132,4 @@ describe('Events', () => {
       expect(isinEventsArray).toContain(isinEvents2);
     });
   });
-
-  describe('toString', () => {
-    it('should return the string representation of the Events', () => {
-      const str = events.toString();
-      
-      expect(str).toContain('Events');
-      expect(str).toContain('2 ISINs');
-    });
-  });
 });

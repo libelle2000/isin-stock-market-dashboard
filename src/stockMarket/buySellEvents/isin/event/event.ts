@@ -166,11 +166,4 @@ export abstract class Event {
            this._tradingDateTime.getTime() === other.tradingDateTime.getTime() &&
            this._totalIncludingCosts.equals(other.totalIncludingCosts);
   }
-
-  /**
-   * Returns the string representation of the Event
-   */
-  toString(): string {
-    return `${this._type} ${this._nominaleCount} ${this._stockName} (${this._isin.toString()}) at ${this._tradingDateTime.toISOString()} for ${this._stockPrice.toString()}`;
-  }
 }

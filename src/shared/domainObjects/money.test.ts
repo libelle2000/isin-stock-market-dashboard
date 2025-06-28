@@ -77,23 +77,6 @@ describe('Money', () => {
     });
   });
 
-  describe('toString', () => {
-    it('should format Euro amount correctly', () => {
-      const money = new Money('€10.50');
-      expect(money.toString()).toBe('EUR 10.50');
-    });
-
-    it('should format Dollar amount correctly', () => {
-      const money = new Money('$20.75');
-      expect(money.toString()).toBe('USD 20.75');
-    });
-
-    it('should format with two decimal places', () => {
-      const money = new Money('€10');
-      expect(money.toString()).toBe('EUR 10.00');
-    });
-  });
-
   describe('fromAmount', () => {
     it('should create a Money instance with the specified amount and default currency', () => {
       const money = Money.fromAmount(10.50);

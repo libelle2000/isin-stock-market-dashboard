@@ -97,11 +97,4 @@ export class IsinEvents {
   [Symbol.iterator](): Iterator<Event> {
     return this._events[Symbol.iterator]();
   }
-
-  /**
-   * Returns the string representation of the IsinEvents
-   */
-  toString(): string {
-    return `IsinEvents(${this._isin.toString()}, ${this._events.length} events)`;
-  }
 }

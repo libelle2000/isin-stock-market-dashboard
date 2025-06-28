@@ -115,14 +115,4 @@ describe('DataPoint', () => {
       expect(array).toEqual([1594245600000, 30.275]);
     });
   });
-
-  describe('toString', () => {
-    it('should return the string representation of the DataPoint', () => {
-      const dataPoint = new DataPoint(1594245600000, 30.275);
-      const str = dataPoint.toString();
-      
-      expect(str).toContain('2020-07-08T22:00:00.000Z');
-      expect(str).toContain('EUR 30.275');
-    });
-  });
 });

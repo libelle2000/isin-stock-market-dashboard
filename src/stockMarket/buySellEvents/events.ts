@@ -67,11 +67,4 @@ export class Events {
   [Symbol.iterator](): Iterator<IsinEvents> {
     return this.allIsinEvents[Symbol.iterator]();
   }
-
-  /**
-   * Returns the string representation of the Events
-   */
-  toString(): string {
-    return `Events(${this.count} ISINs)`;
-  }
 }

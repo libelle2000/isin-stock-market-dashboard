@@ -188,15 +188,4 @@ describe('IsinEvents', () => {
       expect(events[2]).toBe(buyEvent1); // 2024-12-04
     });
   });
-
-  describe('toString', () => {
-    it('should return the string representation of the IsinEvents', () => {
-      const isinEvents = new IsinEvents(isin, [buyEvent1, buyEvent2, sellEvent]);
-      const str = isinEvents.toString();
-      
-      expect(str).toContain('IsinEvents');
-      expect(str).toContain('GB0009895292');
-      expect(str).toContain('3 events');
-    });
-  });
 });
