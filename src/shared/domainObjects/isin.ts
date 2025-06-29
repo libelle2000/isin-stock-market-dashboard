@@ -49,11 +49,7 @@ export class Isin implements JsonSerializable {
     }
 
     // Remaining characters must be alphanumeric
-    if (!/^[A-Z]{2}[A-Z0-9]{10}$/.test(value)) {
-      return false;
-    }
-
-    return true;
+    return /^[A-Z]{2}[A-Z0-9]{10}$/.test(value);
   }
 
   /**
