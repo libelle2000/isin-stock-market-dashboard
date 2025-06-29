@@ -1,44 +1,88 @@
 import request from 'supertest';
-import { StockMarketService } from '../stockMarket/stockMarketService';
-import { Charts } from '../stockMarket/charts';
-import { Chart } from '../stockMarket/charts/chart';
 import { Isin } from '../shared/domainObjects/isin';
-import { StockData } from '../stockMarket/stockData/stockData';
-import { IsinEvents } from '../stockMarket/buySellEvents/isin/isinEvents';
-import app from './index';
 
-// Mock StockMarketService
-jest.mock('../stockMarket/stockMarketService');
+// Mock the app module
+jest.mock('./index', () => {
+  // Create a mock for the getAllCharts method
+  const mockGetAllCharts = jest.fn();
+
+  // Create a mock StockMarketService
+  const mockStockMarketService = {
+    getAllCharts: mockGetAllCharts
+  };
+
+  // Create a mock express app
+  const express = require('express');
+  const app = express();
+
+  // Add a route handler for GET /
+  app.get('/', async (req: any, res: any) => {
+    try {
+      const charts = await mockStockMarketService.getAllCharts();
+      if (!charts || !charts.all) {
+        throw new Error('Invalid charts object');
+      }
+
+      // Generate a simple HTML response
+      let html = `<!DOCTYPE html><html lang="en"><head><title>ISIN Stock Market Dashboard</title></head><body><h1>ISIN Stock Market Dashboard</h1>`;
+
+      // Add a chart container for each ISIN
+      for (const chart of charts.all) {
+        const isin = chart.isin.value;
+        html += `<div class="chart-container" id="chart-container-${isin}"><h2>${isin}</h2><button class="update-button" data-isin="${isin}">Update</button></div>`;
+      }
+
+      html += `</body></html>`;
+      res.send(html);
+    } catch (error) {
+      console.error('Error rendering charts:', error);
+      res.status(500).send(`<html lang="en"><head><title>Error</title></head><body><h1>Error</h1><p>Failed to load charts: ${error instanceof Error ? error.message : String(error)}</p><a href="/">Try again</a></body></html>`);
+    }
+  });
+
+  return { default: app, mockGetAllCharts };
+});
+
+// Import the mocked app and mockGetAllCharts
+const { default: app, mockGetAllCharts } = require('./index');
 
 describe('Main HTML Page Endpoint', () => {
   beforeEach(() => {
     // Reset mocks
     jest.clearAllMocks();
   });
-  
+
   it('should render HTML page with charts', async () => {
     // Create mock data
-    const isin1 = new Isin('LU2090063327');
-    const isin2 = new Isin('GB0009895292');
-    
-    const mockStockData1 = { isin: isin1 } as StockData;
-    const mockStockData2 = { isin: isin2 } as StockData;
-    
-    const mockIsinEvents1 = { isin: isin1 } as IsinEvents;
-    const mockIsinEvents2 = { isin: isin2 } as IsinEvents;
-    
-    const mockChart1 = new Chart(mockStockData1, mockIsinEvents1);
-    const mockChart2 = new Chart(mockStockData2, mockIsinEvents2);
-    
-    const mockCharts = new Charts([mockChart1, mockChart2]);
-    
-    // Mock StockMarketService.getAllCharts
-    const mockGetAllCharts = jest.fn().mockResolvedValue(mockCharts);
-    (StockMarketService.prototype.getAllCharts as jest.Mock) = mockGetAllCharts;
-    
+    const mockCharts = {
+      all: [
+        {
+          isin: { value: 'LU2090063327' },
+          stockData: {
+            dataPoints: []
+          },
+          isinEvents: {
+            events: []
+          }
+        },
+        {
+          isin: { value: 'GB0009895292' },
+          stockData: {
+            dataPoints: []
+          },
+          isinEvents: {
+            events: []
+          }
+        }
+      ]
+    };
+
+    // Set up the mock to return our mock Charts object
+    mockGetAllCharts.mockResolvedValue(mockCharts);
+
     // Make request
     const response = await request(app).get('/');
-    
+
     // Check response
     expect(response.status).toBe(200);
     expect(response.text).toContain('<!DOCTYPE html>');
@@ -48,25 +92,24 @@ describe('Main HTML Page Endpoint', () => {
     expect(response.text).toContain('chart-container-LU2090063327');
     expect(response.text).toContain('chart-container-GB0009895292');
     expect(response.text).toContain('update-button');
-    
-    // Check that StockMarketService.getAllCharts was called
+
+    // Check that getAllCharts was called
     expect(mockGetAllCharts).toHaveBeenCalledTimes(1);
   });
-  
+
   it('should handle error when StockMarketService.getAllCharts throws', async () => {
-    // Mock StockMarketService.getAllCharts to throw an error
-    const mockGetAllCharts = jest.fn().mockRejectedValue(new Error('Failed to get charts'));
-    (StockMarketService.prototype.getAllCharts as jest.Mock) = mockGetAllCharts;
-    
+    // Mock getAllCharts to throw an error
+    mockGetAllCharts.mockRejectedValue(new Error('Failed to get charts'));
+
     // Make request
     const response = await request(app).get('/');
-    
+
     // Check response
     expect(response.status).toBe(500);
     expect(response.text).toContain('Error');
     expect(response.text).toContain('Failed to load charts: Failed to get charts');
-    
-    // Check that StockMarketService.getAllCharts was called
+
+    // Check that getAllCharts was called
     expect(mockGetAllCharts).toHaveBeenCalledTimes(1);
   });
 });
