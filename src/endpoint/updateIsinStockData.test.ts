@@ -1,8 +1,8 @@
 import request from 'supertest';
 import express from 'express';
-import { Isin } from '../shared/domainObjects/isin';
-import { StockMarketService } from '../stockMarket/stockMarketService';
-import { updateIsinStockDataRouter } from './updateIsinStockData';
+import {Isin} from '../shared/domainObjects/isin';
+import {StockMarketService} from '../stockMarket/stockMarketService';
+import {updateIsinStockDataRouter} from './updateIsinStockData';
 
 // Mock StockMarketService
 jest.mock('../stockMarket/stockMarketService');
@@ -71,8 +71,7 @@ describe('Update ISIN Stock Data Endpoint', () => {
   
   it('should return 500 when StockMarketService throws an error', async () => {
     // Mock StockMarketService.fetchStockDataByIsin to throw an error
-    const mockFetchStockDataByIsin = jest.fn().mockRejectedValue(new Error('API error'));
-    (StockMarketService.prototype.fetchStockDataByIsin as jest.Mock) = mockFetchStockDataByIsin;
+    (StockMarketService.prototype.fetchStockDataByIsin as jest.Mock) = jest.fn().mockRejectedValue(new Error('API error'));
     
     // Make request
     const response = await request(app)
