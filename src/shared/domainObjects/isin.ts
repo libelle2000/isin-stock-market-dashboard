@@ -34,7 +34,7 @@ export class Isin implements JsonSerializable {
    * @returns true if the ISIN is valid, false otherwise
    */
   static isValid(value: string): boolean {
-    if (!value || typeof value !== 'string') {
+    if (!value) {
       return false;
     }
 
