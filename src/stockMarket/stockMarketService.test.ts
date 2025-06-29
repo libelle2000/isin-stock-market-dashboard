@@ -179,6 +179,52 @@ describe('StockMarketService', () => {
       // Restore console.error
       console.error = originalConsoleError;
     });
+    
+    it('should skip ISIN if fetchStockDataByIsin throws and log the error', async () => {
+      // Arrange
+      const mockIsinEvents1 = { isin: isin1 } as unknown as IsinEvents;
+      const mockIsinEvents2 = { isin: isin2 } as unknown as IsinEvents;
+      const mockEvents = {
+        isins: [isin1, isin2],
+        getByIsin: jest.fn((isin) => {
+          if (isin.value === isin1.value) return mockIsinEvents1;
+          if (isin.value === isin2.value) return mockIsinEvents2;
+          return undefined;
+        })
+      } as unknown as Events;
+      (BuySellEventRepository.getAllEvents as jest.Mock).mockResolvedValue(mockEvents);
+
+      // ISIN1: no stock data, fetch throws
+      (StockDataRepository.getStockDataByIsin as jest.Mock)
+        .mockImplementationOnce(() => Promise.resolve(null)) // first call for isin1
+        .mockImplementationOnce(() => Promise.resolve(null)) // after fetch for isin1
+        .mockImplementation(() => Promise.resolve({ isin: isin2 } as unknown as StockData)); // for isin2
+
+      // Mock fetchStockDataByIsin to throw for isin1
+      const fetchSpy = jest.spyOn(service, 'fetchStockDataByIsin').mockImplementation(async (isin) => {
+        if (isin.value === isin1.value) throw new Error('API error');
+        return Promise.resolve();
+      });
+
+      // Mock console.error
+      const errorSpy = jest.spyOn(console, 'error').mockImplementation(() => {});
+
+      // Act
+      const result = await service.getAllCharts();
+
+      // Assert
+      expect(fetchSpy).toHaveBeenCalledWith(isin1);
+      expect(errorSpy).toHaveBeenCalledWith(
+        expect.stringContaining(`Error fetching stock data for ISIN ${isin1.value}`)
+      );
+      // Only isin2 should be present in the charts
+      expect(result.all).toHaveLength(1);
+      expect(result.all[0].stockData.isin).toEqual(isin2);
+
+      // Cleanup
+      fetchSpy.mockRestore();
+      errorSpy.mockRestore();
+    });
   });
   
   describe('fetchStockDataByIsin', () => {

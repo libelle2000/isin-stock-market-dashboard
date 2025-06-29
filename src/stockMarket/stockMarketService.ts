@@ -40,7 +40,12 @@ export class StockMarketService {
 
           // 4. If stock data is not available, fetch it from the API
           if (!stockData) {
-            await this.fetchStockDataByIsin(isin);
+            try {
+              await this.fetchStockDataByIsin(isin);
+            } catch (e) {
+                console.error(`Error fetching stock data for ISIN ${isin.value}: ${e instanceof Error ? e.message : String(e)}`);
+                continue; // Skip this ISIN if fetching fails
+            }
             stockData = await StockDataRepository.getStockDataByIsin(isin);
 
             // If still null after fetching, skip this ISIN
