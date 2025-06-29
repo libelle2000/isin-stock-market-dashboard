@@ -67,4 +67,36 @@ describe('DataPoint', () => {
       expect(dataPoint.price.currency).toBe('€');
     });
   });
+
+  describe('toJSON', () => {
+    it('should return a JSON-serializable object with timestamp and price', () => {
+      const date = new Date('2020-07-09T00:00:00.000Z');
+      const money = new Money(30.275, Currency.EUR);
+      const dataPoint = new DataPoint(date, money);
+
+      const json = dataPoint.toJSON();
+
+      expect(json).toEqual({
+        timestamp: date.toISOString(),
+        unixTimestamp: date.getTime(),
+        price: {
+          amount: 30.275,
+          currency: '€'
+        }
+      });
+
+      // Verify it can be properly serialized
+      const serialized = JSON.stringify(dataPoint);
+      const parsed = JSON.parse(serialized);
+
+      expect(parsed).toEqual({
+        timestamp: date.toISOString(),
+        unixTimestamp: date.getTime(),
+        price: {
+          amount: 30.275,
+          currency: '€'
+        }
+      });
+    });
+  });
 });

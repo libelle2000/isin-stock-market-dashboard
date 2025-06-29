@@ -1,5 +1,6 @@
 import { Isin } from '../../../../shared/domainObjects/isin';
 import { Money } from '../../../../shared/domainObjects/money';
+import { ToJSON } from '../../../../shared/interfaces/toJSON';
 
 /**
  * Type of event (buy or sell)
@@ -31,7 +32,7 @@ export interface EventData {
 /**
  * Abstract immutable parent class for buy and sell events
  */
-export abstract class Event {
+export abstract class Event implements ToJSON {
   private readonly _type: EventType;
   private readonly _isin: Isin;
   private readonly _stockName: string;
@@ -146,5 +147,23 @@ export abstract class Event {
    */
   get totalIncludingCosts(): Money {
     return this._totalIncludingCosts;
+  }
+
+  /**
+   * Converts the Event to a JSON-serializable representation
+   * @returns A plain object with all event properties
+   */
+  toJSON(): Record<string, any> {
+    return {
+      type: this._type,
+      isin: this._isin.toJSON(),
+      stockName: this._stockName,
+      nominaleCount: this._nominaleCount,
+      stockPrice: this._stockPrice.toJSON(),
+      tradingDate: this._tradingDateTime.toISOString().split('T')[0],
+      tradingTime: this._tradingDateTime.toTimeString().split(' ')[0],
+      tradingDateTime: this._tradingDateTime.toISOString(),
+      totalIncludingCosts: this._totalIncludingCosts.toJSON()
+    };
   }
 }

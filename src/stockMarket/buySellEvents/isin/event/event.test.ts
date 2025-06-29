@@ -36,17 +36,17 @@ describe('Event', () => {
   describe('constructor', () => {
     it('should create a valid Event object', () => {
       const event = new TestEvent(buyEventData);
-      
+
       expect(event.type).toBe(EventType.BUY);
       expect(event.isin.value).toBe('GB0009895292');
       expect(event.stockName).toBe('AstraZeneca PLC');
       expect(event.nominaleCount).toBe(12);
       expect(event.stockPrice.amount).toBeCloseTo(130.5);
       expect(event.stockPrice.currency).toBe('€');
-      
+
       const expectedDate = new Date(2024, 11, 4, 8, 16, 11);
       expect(event.tradingDateTime.getTime()).toBe(expectedDate.getTime());
-      
+
       expect(event.totalIncludingCosts.amount).toBeCloseTo(1574.82);
       expect(event.totalIncludingCosts.currency).toBe('€');
     });
@@ -88,12 +88,56 @@ describe('Event', () => {
   describe('getters', () => {
     it('should return immutable copies of objects', () => {
       const event = new TestEvent(buyEventData);
-      
+
       // Check that the returned date is a copy
       const tradingDateTime = event.tradingDateTime;
       const originalTime = tradingDateTime.getTime();
       tradingDateTime.setFullYear(2000);
       expect(event.tradingDateTime.getTime()).toBe(originalTime);
+    });
+  });
+
+  describe('toJSON', () => {
+    it('should return a JSON-serializable object with all event properties', () => {
+      const event = new TestEvent(buyEventData);
+
+      const json = event.toJSON();
+
+      expect(json).toEqual({
+        type: EventType.BUY,
+        isin: event.isin.toJSON(),
+        stockName: 'AstraZeneca PLC',
+        nominaleCount: 12,
+        stockPrice: event.stockPrice.toJSON(),
+        tradingDate: '2024-12-04',
+        tradingTime: '08:16:11',
+        tradingDateTime: event.tradingDateTime.toISOString(),
+        totalIncludingCosts: event.totalIncludingCosts.toJSON()
+      });
+
+      // Verify it can be properly serialized
+      const serialized = JSON.stringify(event);
+      const parsed = JSON.parse(serialized);
+
+      expect(parsed).toEqual({
+        type: 'buy',
+        isin: {
+          value: 'GB0009895292'
+        },
+        stockName: 'AstraZeneca PLC',
+        nominaleCount: 12,
+        stockPrice: {
+          amount: 130.5,
+          currency: '€'
+        },
+        tradingDate: '2024-12-04',
+        tradingTime: '08:16:11',
+        tradingDateTime: event.tradingDateTime.toISOString(),
+        totalIncludingCosts: {
+          amount: 1574.82,
+          currency: '€'
+        }
+      });
     });
   });
 });
@@ -128,7 +172,7 @@ describe('BuyEvent', () => {
 
   it('should create a valid BuyEvent', () => {
     const buyEvent = new BuyEvent(buyEventData);
-    
+
     expect(buyEvent.type).toBe(EventType.BUY);
     expect(buyEvent instanceof BuyEvent).toBe(true);
     expect(buyEvent instanceof Event).toBe(true);
@@ -169,7 +213,7 @@ describe('SellEvent', () => {
 
   it('should create a valid SellEvent', () => {
     const sellEvent = new SellEvent(sellEventData);
-    
+
     expect(sellEvent.type).toBe(EventType.SELL);
     expect(sellEvent instanceof SellEvent).toBe(true);
     expect(sellEvent instanceof Event).toBe(true);

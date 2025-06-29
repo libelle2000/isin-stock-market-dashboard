@@ -2,11 +2,12 @@ import { Isin } from '../../../shared/domainObjects/isin';
 import { Event } from './event/event';
 import { BuyEvent } from './event/buyEvent';
 import { SellEvent } from './event/sellEvent';
+import { ToJSON } from '../../../shared/interfaces/toJSON';
 
 /**
  * Immutable collection of events for a specific ISIN
  */
-export class IsinEvents {
+export class IsinEvents implements ToJSON {
   private readonly _isin: Isin;
   private readonly _events: ReadonlyArray<Event>;
 
@@ -96,5 +97,17 @@ export class IsinEvents {
    */
   [Symbol.iterator](): Iterator<Event> {
     return this._events[Symbol.iterator]();
+  }
+
+  /**
+   * Converts the IsinEvents to a JSON-serializable representation
+   * @returns A plain object with the ISIN and events
+   */
+  toJSON(): Record<string, any> {
+    return {
+      isin: this._isin.toJSON(),
+      events: this._events.map(event => event.toJSON()),
+      count: this._events.length
+    };
   }
 }

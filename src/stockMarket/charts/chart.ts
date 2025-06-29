@@ -1,12 +1,13 @@
 import { Isin } from '../../shared/domainObjects/isin';
 import { IsinEvents } from '../buySellEvents/isin/isinEvents';
 import { StockData } from '../stockData/stockData';
+import { ToJSON } from '../../shared/interfaces/toJSON';
 
 /**
  * Immutable class representing a chart for a single ISIN
  * Contains stock data and buy/sell events for the ISIN
  */
-export class Chart {
+export class Chart implements ToJSON {
   private readonly _isin: Isin;
   private readonly _stockData: StockData;
   private readonly _isinEvents: IsinEvents;
@@ -63,5 +64,19 @@ export class Chart {
    */
   get earliestPrice(): number {
     return this._stockData.earliestDataPoint.price.amount;
+  }
+
+  /**
+   * Converts the Chart to a JSON-serializable representation
+   * @returns A plain object with the ISIN, stock data, and events
+   */
+  toJSON(): Record<string, any> {
+    return {
+      isin: this._isin.toJSON(),
+      stockData: this._stockData.toJSON(),
+      isinEvents: this._isinEvents.toJSON(),
+      latestPrice: this.latestPrice,
+      earliestPrice: this.earliestPrice
+    };
   }
 }

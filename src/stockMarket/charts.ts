@@ -1,11 +1,12 @@
 import { Isin } from '../shared/domainObjects/isin';
 import { Chart } from './charts/chart';
+import { ToJSON } from '../shared/interfaces/toJSON';
 
 /**
  * Immutable collection of Chart objects
  * Implements Iterable to allow iterating over the charts
  */
-export class Charts implements Iterable<Chart> {
+export class Charts implements Iterable<Chart>, ToJSON {
   private readonly _charts: ReadonlyArray<Chart>;
 
   /**
@@ -42,5 +43,18 @@ export class Charts implements Iterable<Chart> {
    */
   [Symbol.iterator](): Iterator<Chart> {
     return this._charts[Symbol.iterator]();
+  }
+
+  /**
+   * Converts the Charts collection to a JSON-serializable representation
+   * @returns A plain object with all charts
+   */
+  toJSON(): Record<string, any> {
+    return {
+      all: this._charts.map(chart => chart.toJSON()),
+      count: this._charts.length,
+      //@todo is this needed?
+      isins: this.isins.map(isin => isin.toJSON())
+    };
   }
 }

@@ -63,4 +63,48 @@ describe('StockData', () => {
     expect(() => stockData.earliestDataPoint).toThrow('No data points available');
   });
 
+  describe('toJSON', () => {
+    it('should return a JSON-serializable object with ISIN and data points', () => {
+      const stockData = new StockData(isin, dataPoints);
+
+      const json = stockData.toJSON();
+
+      expect(json).toEqual({
+        isin: isin.toJSON(),
+        dataPoints: dataPoints.map(dp => dp.toJSON()),
+        count: 3
+      });
+
+      // Verify it can be properly serialized
+      const serialized = JSON.stringify(stockData);
+      const parsed = JSON.parse(serialized);
+
+      expect(parsed).toEqual({
+        isin: {
+          value: 'LU2090063327'
+        },
+        dataPoints: dataPoints.map(dp => ({
+          timestamp: dp.timestamp.toISOString(),
+          unixTimestamp: dp.unixTimestamp,
+          price: {
+            amount: dp.price.amount,
+            currency: dp.price.currency
+          }
+        })),
+        count: 3
+      });
+    });
+
+    it('should work with empty data points', () => {
+      const stockData = new StockData(isin, []);
+
+      const json = stockData.toJSON();
+
+      expect(json).toEqual({
+        isin: isin.toJSON(),
+        dataPoints: [],
+        count: 0
+      });
+    });
+  });
 });

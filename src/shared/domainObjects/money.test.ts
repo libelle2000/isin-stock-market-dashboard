@@ -80,4 +80,35 @@ describe('Money', () => {
       expect(money.currency).toBe('$');
     });
   });
+
+  describe('toJSON', () => {
+    it('should return a JSON-serializable object with amount and currency', () => {
+      const money = new Money(10.50, Currency.EUR);
+      const json = money.toJSON();
+
+      expect(json).toEqual({
+        amount: 10.50,
+        currency: '€'
+      });
+
+      // Verify it can be properly serialized
+      const serialized = JSON.stringify(money);
+      const parsed = JSON.parse(serialized);
+
+      expect(parsed).toEqual({
+        amount: 10.50,
+        currency: '€'
+      });
+    });
+
+    it('should work with USD currency', () => {
+      const money = new Money(20.75, Currency.USD);
+      const json = money.toJSON();
+
+      expect(json).toEqual({
+        amount: 20.75,
+        currency: '$'
+      });
+    });
+  });
 });

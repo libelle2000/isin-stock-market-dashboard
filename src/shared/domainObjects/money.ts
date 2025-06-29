@@ -9,7 +9,9 @@ export enum Currency {
 /**
  * Simple money class for representing monetary values
  */
-export class Money {
+import { ToJSON } from '../../shared/interfaces/toJSON';
+
+export class Money implements ToJSON {
   private readonly _amount: number;
   private readonly _currency: Currency;
 
@@ -88,5 +90,16 @@ export class Money {
     }
 
     return new Money(amount, currency);
+  }
+
+  /**
+   * Converts the Money object to a JSON-serializable representation
+   * @returns A plain object with the amount and currency
+   */
+  toJSON(): Record<string, any> {
+    return {
+      amount: this._amount,
+      currency: this._currency
+    };
   }
 }

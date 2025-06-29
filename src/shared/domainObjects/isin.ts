@@ -4,7 +4,9 @@
  * ISINs are 12-character alphanumeric codes that uniquely identify a security.
  * Format: 2-letter country code + 9-character alphanumeric identifier + check digit
  */
-export class Isin {
+import { ToJSON } from '../../shared/interfaces/toJSON';
+
+export class Isin implements ToJSON {
   private readonly _value: string;
 
   /**
@@ -64,5 +66,15 @@ export class Isin {
       return false;
     }
     return this._value === other.value;
+  }
+
+  /**
+   * Converts the ISIN to a JSON-serializable representation
+   * @returns A plain object with the ISIN value
+   */
+  toJSON(): Record<string, any> {
+    return {
+      value: this._value
+    };
   }
 }

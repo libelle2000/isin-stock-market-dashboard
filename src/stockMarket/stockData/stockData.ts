@@ -1,11 +1,12 @@
 import { Isin } from '../../shared/domainObjects/isin';
 import { DataPoint } from './dataPoint';
+import { ToJSON } from '../../shared/interfaces/toJSON';
 
 /**
  * Immutable value object representing stock data for a single ISIN
  * Contains an ISIN and a collection of DataPoint objects
  */
-export class StockData {
+export class StockData implements ToJSON {
   private readonly _isin: Isin;
   private readonly _dataPoints: ReadonlyArray<DataPoint>;
 
@@ -61,5 +62,17 @@ export class StockData {
    */
   get count(): number {
     return this._dataPoints.length;
+  }
+
+  /**
+   * Converts the StockData to a JSON-serializable representation
+   * @returns A plain object with the ISIN and data points
+   */
+  toJSON(): Record<string, any> {
+    return {
+      isin: this._isin.toJSON(),
+      dataPoints: this._dataPoints.map(dp => dp.toJSON()),
+      count: this._dataPoints.length
+    };
   }
 }

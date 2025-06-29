@@ -1,10 +1,11 @@
 import {Currency, Money} from '../../shared/domainObjects/money';
+import { ToJSON } from '../../shared/interfaces/toJSON';
 
 /**
  * Immutable value object representing a single data point in stock data
  * Contains a timestamp and a stock price
  */
-export class DataPoint {
+export class DataPoint implements ToJSON {
   private readonly _timestamp: Date;
   private readonly _price: Money;
 
@@ -54,5 +55,17 @@ export class DataPoint {
    */
   get price(): Money {
     return this._price;
+  }
+
+  /**
+   * Converts the DataPoint to a JSON-serializable representation
+   * @returns A plain object with the timestamp and price
+   */
+  toJSON(): Record<string, any> {
+    return {
+      timestamp: this._timestamp.toISOString(),
+      unixTimestamp: this._timestamp.getTime(),
+      price: this._price.toJSON()
+    };
   }
 }

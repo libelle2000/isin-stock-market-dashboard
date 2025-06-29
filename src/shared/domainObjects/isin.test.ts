@@ -52,4 +52,23 @@ describe('Isin', () => {
       expect(isin.equals('GB0009895292' as any)).toBe(false);
     });
   });
+
+  describe('toJSON', () => {
+    it('should return a JSON-serializable object with the ISIN value', () => {
+      const isin = new Isin('GB0009895292');
+      const json = isin.toJSON();
+
+      expect(json).toEqual({
+        value: 'GB0009895292'
+      });
+
+      // Verify it can be properly serialized
+      const serialized = JSON.stringify(isin);
+      const parsed = JSON.parse(serialized);
+
+      expect(parsed).toEqual({
+        value: 'GB0009895292'
+      });
+    });
+  });
 });
