@@ -1,11 +1,11 @@
 import {Currency, Money} from '../../shared/domainObjects/money';
-import { ToJSON } from '../../shared/interfaces/toJSON';
+import { JsonSerializable } from '../../shared/interfaces/jsonSerializable';
 
 /**
  * Immutable value object representing a single data point in stock data
  * Contains a timestamp and a stock price
  */
-export class DataPoint implements ToJSON {
+export class DataPoint implements JsonSerializable {
   private readonly _timestamp: Date;
   private readonly _price: Money;
 

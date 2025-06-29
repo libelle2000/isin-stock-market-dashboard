@@ -1,12 +1,12 @@
 import { Isin } from '../../shared/domainObjects/isin';
 import { DataPoint } from './dataPoint';
-import { ToJSON } from '../../shared/interfaces/toJSON';
+import { JsonSerializable } from '../../shared/interfaces/jsonSerializable';
 
 /**
  * Immutable value object representing stock data for a single ISIN
  * Contains an ISIN and a collection of DataPoint objects
  */
-export class StockData implements ToJSON {
+export class StockData implements JsonSerializable {
   private readonly _isin: Isin;
   private readonly _dataPoints: ReadonlyArray<DataPoint>;
 

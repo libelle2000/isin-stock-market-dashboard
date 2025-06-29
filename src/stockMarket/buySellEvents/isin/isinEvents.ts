@@ -2,12 +2,12 @@ import { Isin } from '../../../shared/domainObjects/isin';
 import { Event } from './event/event';
 import { BuyEvent } from './event/buyEvent';
 import { SellEvent } from './event/sellEvent';
-import { ToJSON } from '../../../shared/interfaces/toJSON';
+import { JsonSerializable } from '../../../shared/interfaces/jsonSerializable';
 
 /**
  * Immutable collection of events for a specific ISIN
  */
-export class IsinEvents implements ToJSON {
+export class IsinEvents implements JsonSerializable {
   private readonly _isin: Isin;
   private readonly _events: ReadonlyArray<Event>;
 

@@ -1,6 +1,6 @@
 import { Isin } from '../../../../shared/domainObjects/isin';
 import { Money } from '../../../../shared/domainObjects/money';
-import { ToJSON } from '../../../../shared/interfaces/toJSON';
+import { JsonSerializable } from '../../../../shared/interfaces/jsonSerializable';
 
 /**
  * Type of event (buy or sell)
@@ -32,7 +32,7 @@ export interface EventData {
 /**
  * Abstract immutable parent class for buy and sell events
  */
-export abstract class Event implements ToJSON {
+export abstract class Event implements JsonSerializable {
   private readonly _type: EventType;
   private readonly _isin: Isin;
   private readonly _stockName: string;

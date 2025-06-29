@@ -9,9 +9,9 @@ export enum Currency {
 /**
  * Simple money class for representing monetary values
  */
-import { ToJSON } from '../../shared/interfaces/toJSON';
+import { JsonSerializable } from '../interfaces/jsonSerializable';
 
-export class Money implements ToJSON {
+export class Money implements JsonSerializable {
   private readonly _amount: number;
   private readonly _currency: Currency;
 

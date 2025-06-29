@@ -1,13 +1,13 @@
 import { Isin } from '../../shared/domainObjects/isin';
 import { IsinEvents } from '../buySellEvents/isin/isinEvents';
 import { StockData } from '../stockData/stockData';
-import { ToJSON } from '../../shared/interfaces/toJSON';
+import { JsonSerializable } from '../../shared/interfaces/jsonSerializable';
 
 /**
  * Immutable class representing a chart for a single ISIN
  * Contains stock data and buy/sell events for the ISIN
  */
-export class Chart implements ToJSON {
+export class Chart implements JsonSerializable {
   private readonly _isin: Isin;
   private readonly _stockData: StockData;
   private readonly _isinEvents: IsinEvents;

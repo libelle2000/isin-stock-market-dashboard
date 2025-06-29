@@ -1,12 +1,12 @@
 import { Isin } from '../shared/domainObjects/isin';
 import { Chart } from './charts/chart';
-import { ToJSON } from '../shared/interfaces/toJSON';
+import { JsonSerializable } from '../shared/interfaces/jsonSerializable';
 
 /**
  * Immutable collection of Chart objects
  * Implements Iterable to allow iterating over the charts
  */
-export class Charts implements Iterable<Chart>, ToJSON {
+export class Charts implements Iterable<Chart>, JsonSerializable {
   private readonly _charts: ReadonlyArray<Chart>;
 
   /**
