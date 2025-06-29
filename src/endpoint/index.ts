@@ -240,7 +240,7 @@ app.get('/', async (req, res) => {
   } catch (error) {
     console.error('Error rendering charts:', error);
     res.status(500).send(`
-      <html>
+      <html lang="en">
         <head><title>Error</title></head>
         <body>
           <h1>Error</h1>
