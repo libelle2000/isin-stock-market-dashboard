@@ -1,5 +1,5 @@
 import { DataPoint } from './dataPoint';
-import { Money, Currency } from '../../shared/domainObjects/money';
+import { Money, Currency } from '../../money';
 
 describe('DataPoint', () => {
   describe('constructor', () => {

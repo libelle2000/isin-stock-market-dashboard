@@ -1,6 +1,6 @@
 import { Isin } from '../../shared/domainObjects/isin';
-import { DataPoint } from './dataPoint';
-import { StockData } from './stockData';
+import { DataPoint } from '../../shared/domainObjects/stockMarket/stockData/dataPoint';
+import { StockData } from '../../shared/domainObjects/stockMarket/stockData/stockData';
 import { StockDataResponse } from '../apiProvider/stockDataSchema';
 
 /**

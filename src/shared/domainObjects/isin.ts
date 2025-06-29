@@ -4,7 +4,7 @@
  * ISINs are 12-character alphanumeric codes that uniquely identify a security.
  * Format: 2-letter country code + 9-character alphanumeric identifier + check digit
  */
-import { JsonSerializable } from '../interfaces/jsonSerializable';
+import { JsonSerializable } from '../jsonSerializable';
 
 export class Isin implements JsonSerializable {
   private readonly _value: string;

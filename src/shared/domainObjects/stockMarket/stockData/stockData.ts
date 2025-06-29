@@ -1,6 +1,6 @@
-import { Isin } from '../../shared/domainObjects/isin';
+import { Isin } from '../../isin';
 import { DataPoint } from './dataPoint';
-import { JsonSerializable } from '../../shared/interfaces/jsonSerializable';
+import { JsonSerializable } from '../../../jsonSerializable';
 
 /**
  * Immutable value object representing stock data for a single ISIN

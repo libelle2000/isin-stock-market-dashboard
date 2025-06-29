@@ -1,5 +1,5 @@
-import {Currency, Money} from '../../shared/domainObjects/money';
-import { JsonSerializable } from '../../shared/interfaces/jsonSerializable';
+import {Currency, Money} from '../../money';
+import { JsonSerializable } from '../../../jsonSerializable';
 
 /**
  * Immutable value object representing a single data point in stock data

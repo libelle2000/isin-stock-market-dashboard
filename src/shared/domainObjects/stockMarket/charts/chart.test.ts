@@ -1,9 +1,9 @@
-import { Isin } from '../../shared/domainObjects/isin';
+import { Isin } from '../../isin';
 import { IsinEvents } from '../buySellEvents/isin/isinEvents';
 import { StockData } from '../stockData/stockData';
 import { DataPoint } from '../stockData/dataPoint';
 import { Chart } from './chart';
-import {Currency, Money} from "../../shared/domainObjects/money";
+import {Currency, Money} from "../../money";
 
 describe('Chart', () => {
   const isin = new Isin('LU2090063327');

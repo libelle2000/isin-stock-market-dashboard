@@ -2,7 +2,7 @@ import { Events } from './events';
 import { IsinEvents } from './isin/isinEvents';
 import { EventData } from './isin/event/event';
 import { BuyEvent } from './isin/event/buyEvent';
-import { Isin } from '../../shared/domainObjects/isin';
+import { Isin } from '../../isin';
 
 describe('Events', () => {
   // Sample ISINs

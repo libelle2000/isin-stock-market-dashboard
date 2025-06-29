@@ -2,10 +2,10 @@ import { Isin } from '../shared/domainObjects/isin';
 import { ApiProvider } from './apiProvider/apiProvider';
 import { StockDataSchema, StockDataResponse } from './apiProvider/stockDataSchema';
 import { BuySellEventRepository } from './buySellEvents/buySellEventRepository';
-import { Events } from './buySellEvents/events';
-import { IsinEvents } from './buySellEvents/isin/isinEvents';
-import { Charts } from './charts';
-import { StockData } from './stockData/stockData';
+import { Events } from '../shared/domainObjects/stockMarket/buySellEvents/events';
+import { IsinEvents } from '../shared/domainObjects/stockMarket/buySellEvents/isin/isinEvents';
+import { Charts } from '../shared/domainObjects/stockMarket/charts';
+import { StockData } from '../shared/domainObjects/stockMarket/stockData/stockData';
 import { StockDataRepository } from './stockData/stockDataRepository';
 import { StockMarketService } from './stockMarketService';
 

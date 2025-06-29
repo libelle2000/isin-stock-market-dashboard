@@ -2,7 +2,7 @@ import { Isin } from '../../shared/domainObjects/isin';
 import { JsonReader } from '../../shared/json/jsonReader';
 import { JsonWriter } from '../../shared/json/jsonWriter';
 import { StockDataRepository } from './stockDataRepository';
-import { StockData } from './stockData';
+import { StockData } from '../../shared/domainObjects/stockMarket/stockData/stockData';
 import { StockDataResponse, StockDataSchema } from '../apiProvider/stockDataSchema';
 import { StockDataMapper } from './stockDataMapper';
 

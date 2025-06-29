@@ -1,10 +1,10 @@
 import path from 'path';
 import {CsvReader} from '../../shared/csv/csvReader';
-import {Events} from './events';
-import {IsinEvents} from './isin/isinEvents';
-import {Event, EventData, EventType} from './isin/event/event';
-import {BuyEvent} from './isin/event/buyEvent';
-import {SellEvent} from './isin/event/sellEvent';
+import {Events} from '../../shared/domainObjects/stockMarket/buySellEvents/events';
+import {IsinEvents} from '../../shared/domainObjects/stockMarket/buySellEvents/isin/isinEvents';
+import {Event, EventData, EventType} from '../../shared/domainObjects/stockMarket/buySellEvents/isin/event/event';
+import {BuyEvent} from '../../shared/domainObjects/stockMarket/buySellEvents/isin/event/buyEvent';
+import {SellEvent} from '../../shared/domainObjects/stockMarket/buySellEvents/isin/event/sellEvent';
 import {Isin} from '../../shared/domainObjects/isin';
 
 /**

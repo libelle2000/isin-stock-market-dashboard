@@ -1,7 +1,7 @@
-import { Isin } from '../../shared/domainObjects/isin';
+import { Isin } from '../../isin';
 import { IsinEvents } from '../buySellEvents/isin/isinEvents';
 import { StockData } from '../stockData/stockData';
-import { JsonSerializable } from '../../shared/interfaces/jsonSerializable';
+import { JsonSerializable } from '../../../jsonSerializable';
 
 /**
  * Immutable class representing a chart for a single ISIN

@@ -1,6 +1,6 @@
 import { BuySellEventRepository } from './buySellEventRepository';
 import { CsvReader } from '../../shared/csv/csvReader';
-import { Events } from './events';
+import { Events } from '../../shared/domainObjects/stockMarket/buySellEvents/events';
 
 // Mock CsvReader
 jest.mock('../../shared/csv/csvReader');

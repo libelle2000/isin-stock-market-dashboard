@@ -1,4 +1,4 @@
-import { Isin } from '../../shared/domainObjects/isin';
+import { Isin } from '../../isin';
 import { IsinEvents } from './isin/isinEvents';
 
 /**

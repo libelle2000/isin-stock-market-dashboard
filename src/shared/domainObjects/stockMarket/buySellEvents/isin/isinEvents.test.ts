@@ -2,7 +2,7 @@ import { IsinEvents } from './isinEvents';
 import { Event, EventData } from './event/event';
 import { BuyEvent } from './event/buyEvent';
 import { SellEvent } from './event/sellEvent';
-import { Isin } from '../../../shared/domainObjects/isin';
+import { Isin } from '../../../isin';
 
 // Mock implementation of the abstract Event class for testing
 class TestEvent extends Event {

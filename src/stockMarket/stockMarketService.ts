@@ -3,8 +3,8 @@ import { ApiProvider } from './apiProvider/apiProvider';
 import { Ing } from './apiProvider/ing';
 import { StockDataSchema } from './apiProvider/stockDataSchema';
 import { BuySellEventRepository } from './buySellEvents/buySellEventRepository';
-import { Chart } from './charts/chart';
-import { Charts } from './charts';
+import { Chart } from '../shared/domainObjects/stockMarket/charts/chart';
+import { Charts } from '../shared/domainObjects/stockMarket/charts';
 import { StockDataRepository } from './stockData/stockDataRepository';
 
 /**

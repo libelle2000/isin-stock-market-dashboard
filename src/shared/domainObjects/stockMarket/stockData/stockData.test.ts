@@ -1,7 +1,7 @@
-import {Isin} from '../../shared/domainObjects/isin';
+import {Isin} from '../../isin';
 import {DataPoint} from './dataPoint';
 import {StockData} from './stockData';
-import {Currency, Money} from "../../shared/domainObjects/money";
+import {Currency, Money} from "../../money";
 
 describe('StockData', () => {
   const isin = new Isin('LU2090063327');

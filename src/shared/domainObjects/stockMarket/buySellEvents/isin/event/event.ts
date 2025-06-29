@@ -1,6 +1,6 @@
-import { Isin } from '../../../../shared/domainObjects/isin';
-import { Money } from '../../../../shared/domainObjects/money';
-import { JsonSerializable } from '../../../../shared/interfaces/jsonSerializable';
+import { Isin } from '../../../../isin';
+import { Money } from '../../../../money';
+import { JsonSerializable } from '../../../../../jsonSerializable';
 
 /**
  * Type of event (buy or sell)

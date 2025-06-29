@@ -1,8 +1,8 @@
-import { Isin } from '../../../shared/domainObjects/isin';
+import { Isin } from '../../../isin';
 import { Event } from './event/event';
 import { BuyEvent } from './event/buyEvent';
 import { SellEvent } from './event/sellEvent';
-import { JsonSerializable } from '../../../shared/interfaces/jsonSerializable';
+import { JsonSerializable } from '../../../../jsonSerializable';
 
 /**
  * Immutable collection of events for a specific ISIN

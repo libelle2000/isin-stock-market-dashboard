@@ -1,6 +1,6 @@
-import { Isin } from '../shared/domainObjects/isin';
+import { Isin } from '../isin';
 import { Chart } from './charts/chart';
-import { JsonSerializable } from '../shared/interfaces/jsonSerializable';
+import { JsonSerializable } from '../../jsonSerializable';
 
 /**
  * Immutable collection of Chart objects

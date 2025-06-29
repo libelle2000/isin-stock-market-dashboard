@@ -1,10 +1,10 @@
-import { Isin } from '../shared/domainObjects/isin';
+import { Isin } from '../isin';
 import { IsinEvents } from './buySellEvents/isin/isinEvents';
 import { StockData } from './stockData/stockData';
 import { DataPoint } from './stockData/dataPoint';
 import { Chart } from './charts/chart';
 import { Charts } from './charts';
-import {Currency, Money} from "../shared/domainObjects/money";
+import {Currency, Money} from "../money";
 
 describe('Charts', () => {
   let chart1: Chart;
