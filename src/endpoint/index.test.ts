@@ -1,5 +1,4 @@
 import request from 'supertest';
-import { Isin } from '../shared/domainObjects/isin';
 
 // Mock the app module
 jest.mock('./index', () => {
