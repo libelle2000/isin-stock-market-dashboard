@@ -62,9 +62,6 @@ export class Isin implements JsonSerializable {
    * @returns true if the ISINs are equal, false otherwise
    */
   equals(other: Isin): boolean {
-    if (!(other instanceof Isin)) {
-      return false;
-    }
     return this._value === other.value;
   }
 
