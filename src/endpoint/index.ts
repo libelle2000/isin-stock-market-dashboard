@@ -115,7 +115,7 @@ app.get('/', async (req, res) => {
                       color: 'blue',
                       font: { weight: 'bold' }
                     },
-                    onClick: function() {
+                    click: function() {
                       showEventDetails(event);
                     }
                   });
@@ -143,7 +143,7 @@ app.get('/', async (req, res) => {
                       color: 'red',
                       font: { weight: 'bold' }
                     },
-                    onClick: function() {
+                    click: function() {
                       showEventDetails(event);
                     }
                   });
