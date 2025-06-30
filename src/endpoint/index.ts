@@ -32,6 +32,7 @@ app.get('/', async (req, res) => {
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>ISIN Stock Market Dashboard</title>
         <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-annotation/dist/chartjs-plugin-annotation.min.js"></script>
         <style>
           body { font-family: Arial, sans-serif; margin: 0; padding: 20px; }
           .chart-container { margin-bottom: 30px; padding: 20px; border: 1px solid #ddd; border-radius: 5px; }
@@ -43,6 +44,9 @@ app.get('/', async (req, res) => {
         </style>
       </head>
       <body>
+        <script>
+          Chart.register('chartjs-plugin-annotation');
+        </script>
         <h1>ISIN Stock Market Dashboard</h1>
         <div id="charts-container">
     `;
