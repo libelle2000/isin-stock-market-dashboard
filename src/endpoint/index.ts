@@ -90,21 +90,26 @@ app.get('/', async (req, res) => {
               // Create annotations for buy/sell events
               const annotations = [];
 
-              // Add buy events (blue upward bars)
+              // Add buy events (blue upward triangle)
               for (const event of buyEvents) {
                 const index = labels.indexOf(new Date(event.tradingDate).toLocaleDateString());
                 if (index !== -1) {
                   annotations.push({
-                    type: 'line',
-                    mode: 'vertical',
-                    scaleID: 'x',
-                    value: index,
-                    borderColor: 'blue',
+                    type: 'point',
+                    xValue: index,
+                    yValue: prices[index],
+                    backgroundColor: 'blue',
+                    pointStyle: 'triangle',
+                    rotation: 0, // Upward
+                    radius: 12,
+                    borderColor: 'white',
                     borderWidth: 2,
                     label: {
                       content: 'Buy',
                       enabled: true,
-                      position: 'top'
+                      position: 'top',
+                      color: 'blue',
+                      font: { weight: 'bold' }
                     },
                     onClick: function() {
                       showEventDetails(event);
@@ -113,21 +118,26 @@ app.get('/', async (req, res) => {
                 }
               }
 
-              // Add sell events (red downward bars)
+              // Add sell events (red downward triangle)
               for (const event of sellEvents) {
                 const index = labels.indexOf(new Date(event.tradingDate).toLocaleDateString());
                 if (index !== -1) {
                   annotations.push({
-                    type: 'line',
-                    mode: 'vertical',
-                    scaleID: 'x',
-                    value: index,
-                    borderColor: 'red',
+                    type: 'point',
+                    xValue: index,
+                    yValue: prices[index],
+                    backgroundColor: 'red',
+                    pointStyle: 'triangle',
+                    rotation: 180, // Downward
+                    radius: 12,
+                    borderColor: 'white',
                     borderWidth: 2,
                     label: {
                       content: 'Sell',
                       enabled: true,
-                      position: 'top'
+                      position: 'top',
+                      color: 'red',
+                      font: { weight: 'bold' }
                     },
                     onClick: function() {
                       showEventDetails(event);
