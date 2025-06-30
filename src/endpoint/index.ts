@@ -40,7 +40,7 @@ app.get('/', async (req, res) => {
           .update-button { padding: 8px 16px; background-color: #4CAF50; color: white; border: none; border-radius: 4px; cursor: pointer; }
           .update-button:disabled { background-color: #cccccc; cursor: not-allowed; }
           .error-message { color: red; margin-top: 5px; display: none; }
-          .sidebar { position: fixed; right: 0; top: 0; width: 300px; height: 100%; background-color: #f8f8f8; padding: 20px; box-shadow: -2px 0 5px rgba(0,0,0,0.1); overflow-y: auto; display: none; }
+          .sidebar { position: fixed; left: 0; top: 10%; width: 300px; height: 100%; background-color: #f8f8f8; padding: 20px; box-shadow: -2px 0 5px rgba(0,0,0,0.1); overflow-y: auto; display: none; }
         </style>
       </head>
       <body>
