@@ -154,8 +154,10 @@ app.get('/', async (req, res) => {
                   datasets: [{
                     label: 'Stock Price',
                     data: prices,
-                    borderColor: 'rgb(75, 192, 192)',
-                    tension: 0.1
+                    borderColor: 'black',
+                    borderWidth: 1,
+                    tension: 0.1,
+                    pointStyle: false,
                   }]
                 },
                 options: {
