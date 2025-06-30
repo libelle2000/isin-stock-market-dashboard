@@ -57,7 +57,7 @@ app.get('/', async (req, res) => {
       html += `
         <div class="chart-container" id="chart-container-${isin}">
           <div class="chart-header">
-            <h2>${isin}</h2>
+            <h2>${isin} ${chart.isinEvents.events[0].stockName}</h2>
             <button class="update-button" data-isin="${isin}">Update</button>
           </div>
           <div class="error-message" id="error-${isin}"></div>
