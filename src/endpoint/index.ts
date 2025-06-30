@@ -184,6 +184,12 @@ app.get('/', async (req, res) => {
             // Format event details
             let details = '';
             for (const [key, value] of Object.entries(event)) {
+              if (typeof value === 'object' && value !== null) {
+                details += '<p><strong>' + key + ':</strong> ';
+                details += Object.values(value).join(' ');
+                details += '</p>';
+                continue;
+              }
               details += '<p><strong>' + key + ':</strong> ' + value + '</p>';
             }
 
