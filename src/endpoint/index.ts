@@ -31,8 +31,6 @@ app.get('/', async (req, res) => {
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>ISIN Stock Market Dashboard</title>
-        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-        <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-annotation/dist/chartjs-plugin-annotation.min.js"></script>
         <style>
           body { font-family: Arial, sans-serif; margin: 0; padding: 20px; }
           .chart-container { margin-bottom: 30px; padding: 20px; border: 1px solid #ddd; border-radius: 5px; }
@@ -42,11 +40,14 @@ app.get('/', async (req, res) => {
           .error-message { color: red; margin-top: 5px; display: none; }
           .sidebar { position: fixed; left: 0; top: 10%; width: 300px; height: 100%; background-color: #f8f8f8; padding: 20px; box-shadow: -2px 0 5px rgba(0,0,0,0.1); overflow-y: auto; display: none; }
         </style>
+        <script type="module">
+          import { Chart as chartJs, registerables } from 'https://cdn.jsdelivr.net/npm/chart.js/+esm';
+          import annotationPlugin from 'https://cdn.jsdelivr.net/npm/chartjs-plugin-annotation/+esm';
+          chartJs.register(...registerables, annotationPlugin);
+          window.chartJs = chartJs;
+        </script>
       </head>
       <body>
-        <script>
-          Chart.register('chartjs-plugin-annotation');
-        </script>
         <h1>ISIN Stock Market Dashboard</h1>
         <div id="charts-container">
     `;
@@ -155,7 +156,7 @@ app.get('/', async (req, res) => {
               }
 
               // Create chart
-              new Chart(ctx, {
+              new window.chartJs(ctx, {
                 type: 'line',
                 data: {
                   labels: labels,
