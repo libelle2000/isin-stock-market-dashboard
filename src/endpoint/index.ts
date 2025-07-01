@@ -34,7 +34,8 @@ app.get('/', async (req, res) => {
         <style>
           body { font-family: Arial, sans-serif; margin: 0; padding: 20px; }
           .chart-container { margin-bottom: 30px; padding: 20px; border: 1px solid #ddd; border-radius: 5px; }
-          .chart-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
+          .chart-header {  margin-bottom: 10px; text-align: right; }
+          .chart-header>* { display: inline-block; }
           .update-button { padding: 8px 16px; background-color: #4CAF50; color: white; border: none; border-radius: 4px; cursor: pointer; }
           .update-button:disabled { background-color: #cccccc; cursor: not-allowed; }
           .error-message { color: red; margin-top: 5px; display: none; }
@@ -60,9 +61,10 @@ app.get('/', async (req, res) => {
           <div class="chart-header">
             <h2>
                 <a href="https://wertpapiere.ing.de/investieren/fondsportrait/${isin}" target="_blank" rel="noopener noreferrer">
-                ${isin} ${chart.isinEvents.events[0].stockName}
+                ${isin} ${chart.isinEvents.latestEvent.stockName}
                 </a>
             </h2>
+            <p>${chart.stockData.earliestDataPoint.timestamp.toLocaleString('sv-SE', {timeZoneName: "short"})} - ${chart.stockData.latestDataPoint.timestamp.toLocaleString('sv-SE', {timeZoneName: "short"})}</p>
             <button class="update-button" data-isin="${isin}">Update</button>
           </div>
           <div class="error-message" id="error-${isin}"></div>
