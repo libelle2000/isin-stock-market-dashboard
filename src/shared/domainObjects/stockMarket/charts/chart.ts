@@ -76,7 +76,9 @@ export class Chart implements JsonSerializable {
       stockData: this._stockData.toJSON(),
       isinEvents: this._isinEvents.toJSON(),
       latestPrice: this.latestPrice,
-      earliestPrice: this.earliestPrice
+      earliestPrice: this.earliestPrice,
+      lowestTotalPriceIncludingCosts: this._isinEvents.lowestTotalIncludingCostsEvent.totalIncludingCosts.amount,
+      highestTotalPriceIncludingCosts: this._isinEvents.highestTotalIncludingCostsEvent.totalIncludingCosts.amount,
     };
   }
 }

@@ -81,6 +81,19 @@ app.get('/', async (req, res) => {
         </div>
 
         <script>
+          function calculateRadius(minValue, maxValue, currentValue) {
+            const minRadius = 10;
+            const maxRadius = 40;
+          
+            // Falls min und max gleich sind (z.B. alle Werte gleich), gib den Mittelwert zurück
+            if (maxValue === minValue) return (minRadius + maxRadius) / 2;
+          
+            // Normiere currentValue auf den Bereich [0, 1]
+            const normalized = (currentValue - minValue) / (maxValue - minValue);
+          
+            // Skaliere auf den gewünschten Radiusbereich
+            return minRadius + normalized * (maxRadius - minRadius);
+          }
           // Function to initialize charts
           function initializeCharts() {
             const chartsData = ${JSON.stringify(charts)};
@@ -96,6 +109,9 @@ app.get('/', async (req, res) => {
               // Extract buy/sell events
               const buyEvents = chart.isinEvents.events.filter(e => e.type === 'buy');
               const sellEvents = chart.isinEvents.events.filter(e => e.type === 'sell');
+              
+              const lowestAmountTotalIncludingCosts = chart.lowestTotalPriceIncludingCosts;
+              const highestAmountTotalIncludingCosts = chart.highestTotalPriceIncludingCosts;
 
               // Create annotations for buy/sell events
               const annotations = [];
@@ -111,7 +127,11 @@ app.get('/', async (req, res) => {
                     backgroundColor: 'blue',
                     pointStyle: 'triangle',
                     rotation: 0, // Upward
-                    radius: 12,
+                    radius: calculateRadius(
+                      lowestAmountTotalIncludingCosts, 
+                      highestAmountTotalIncludingCosts, 
+                      event.totalIncludingCosts.amount
+                    ),
                     borderColor: 'white',
                     borderWidth: 2,
                     label: {
@@ -139,7 +159,11 @@ app.get('/', async (req, res) => {
                     backgroundColor: 'red',
                     pointStyle: 'triangle',
                     rotation: 180, // Downward
-                    radius: 12,
+                    radius: calculateRadius(
+                      lowestAmountTotalIncludingCosts, 
+                      highestAmountTotalIncludingCosts, 
+                      event.totalIncludingCosts.amount
+                    ),
                     borderColor: 'white',
                     borderWidth: 2,
                     label: {

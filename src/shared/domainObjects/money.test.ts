@@ -80,6 +80,36 @@ describe('Money', () => {
       expect(money.currency).toBe('$');
     });
   });
+  
+  describe('comparison methods', () => {
+    it('should return true if amount is less than other', () => {
+      const a = new Money(5, Currency.EUR);
+      const b = new Money(10, Currency.EUR);
+      expect(a.isLessThan(b)).toBe(true);
+      expect(b.isLessThan(a)).toBe(false);
+    });
+  
+    it('should return true if amount is greater than other', () => {
+      const a = new Money(15, Currency.USD);
+      const b = new Money(10, Currency.USD);
+      expect(a.isGreaterThan(b)).toBe(true);
+      expect(b.isGreaterThan(a)).toBe(false);
+    });
+  
+    it('should return false if amounts are equal', () => {
+      const a = new Money(20, Currency.EUR);
+      const b = new Money(20, Currency.EUR);
+      expect(a.isLessThan(b)).toBe(false);
+      expect(a.isGreaterThan(b)).toBe(false);
+    });
+
+    it('should throw and error if currencies are not equal', () => {
+        const a = new Money(10, Currency.EUR);
+        const b = new Money(10, Currency.USD);
+        expect(() => a.isLessThan(b)).toThrow('Cannot compare Money objects with different currencies: € vs $');
+        expect(() => a.isGreaterThan(b)).toThrow('Cannot compare Money objects with different currencies: € vs $');
+    });
+  });
 
   describe('toJSON', () => {
     it('should return a JSON-serializable object with amount and currency', () => {

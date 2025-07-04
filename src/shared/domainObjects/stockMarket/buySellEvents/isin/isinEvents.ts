@@ -10,6 +10,8 @@ import { JsonSerializable } from '../../../../jsonSerializable';
 export class IsinEvents implements JsonSerializable {
   private readonly _isin: Isin;
   private readonly _events: ReadonlyArray<Event>;
+  private readonly _lowestTotalIncludingCostsEvent: Event;
+  private readonly _highestTotalIncludingCostsEvent: Event;
 
   /**
    * Creates a new IsinEvents instance
@@ -31,6 +33,13 @@ export class IsinEvents implements JsonSerializable {
     this._events = [...events].sort((a, b) => 
       a.tradingDateTime.getTime() - b.tradingDateTime.getTime()
     );
+
+    this._lowestTotalIncludingCostsEvent = events.reduce((lowest, current) =>
+        current.totalIncludingCosts.isLessThan(lowest.totalIncludingCosts) ? current : lowest
+    );
+    this._highestTotalIncludingCostsEvent = events.reduce((highest, current) =>
+        current.totalIncludingCosts.isGreaterThan(highest.totalIncludingCosts) ? current : highest
+    );
   }
 
   /**
@@ -45,6 +54,14 @@ export class IsinEvents implements JsonSerializable {
    */
   get events(): ReadonlyArray<Event> {
     return this._events;
+  }
+  
+  get lowestTotalIncludingCostsEvent(): Event {
+    return this._lowestTotalIncludingCostsEvent;
+  }
+  
+  get highestTotalIncludingCostsEvent(): Event {
+    return this._highestTotalIncludingCostsEvent;
   }
 
   /**

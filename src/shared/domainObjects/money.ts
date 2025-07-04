@@ -92,6 +92,23 @@ export class Money implements JsonSerializable {
     return new Money(amount, currency);
   }
 
+  isLessThan(other: Money): boolean {
+    this.ensureSameCurrency(other);
+    return this._amount < other._amount;
+  }
+
+  isGreaterThan(other: Money): boolean {
+    this.ensureSameCurrency(other);
+    return this._amount > other._amount;
+  }
+
+
+  private ensureSameCurrency(other: Money) {
+    if (this._currency !== other._currency) {
+      throw new Error(`Cannot compare Money objects with different currencies: ${this._currency} vs ${other._currency}`);
+    }
+  }
+
   /**
    * Converts the Money object to a JSON-serializable representation
    * @returns A plain object with the amount and currency

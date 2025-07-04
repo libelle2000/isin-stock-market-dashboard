@@ -4,9 +4,12 @@ import { StockData } from '../stockData/stockData';
 import { DataPoint } from '../stockData/dataPoint';
 import { Chart } from './chart';
 import {Currency, Money} from "../../money";
+import {BuyEvent} from "../buySellEvents/isin/event/buyEvent";
+import {SellEvent} from "../buySellEvents/isin/event/sellEvent";
+import {EventData} from "../buySellEvents/isin/event/event";
 
 describe('Chart', () => {
-  const isin = new Isin('LU2090063327');
+  const isin = new Isin('GB0009895292');
   let stockData: StockData;
   let isinEvents: IsinEvents;
 
@@ -21,10 +24,42 @@ describe('Chart', () => {
     // Create a real StockData object
     stockData = new StockData(isin, dataPoints);
 
+    const buyEventData: EventData = {
+      TYPE: 'buy',
+      ISIN: 'GB0009895292',
+      STOCK_NAME: 'AstraZeneca PLC',
+      NOMINALE_COUNT: '12',
+      STOCK_PRICE: '€130,50',
+      TRADING_DATE: '2024-12-04',
+      TRADING_TIME: '8:16:11',
+      MARKET_VALUE: '€1.566,00',
+      FACTOR_USD_TO_EUR: '1',
+      STOCK_PRICE_EUR: '€1.566,00',
+      CAPITAL_TAX: '',
+      CHURCH_TAX: '',
+      SOLIDARITY_TAX: '',
+      COURTAGE: '',
+      STOCK_FEE: '',
+      PROVISION: '€8,82',
+      VARIABLE_TRANSACTION_FEE: '',
+      TOTAL_COSTS: '€8,82',
+      TOTAL_INCLUDING_COSTS: '€1.574,82'
+    };
+
+    const sellEventData: EventData = {
+      ...buyEventData,
+      TYPE: 'sell'
+    };
+
+
     // Mock IsinEvents
-    isinEvents = {
-      isin
-    } as unknown as IsinEvents;
+    isinEvents = new IsinEvents(
+        isin,
+        [
+          new BuyEvent(buyEventData),
+          new SellEvent(sellEventData),
+        ]
+    );
   });
 
   it('should create a Chart instance', () => {
@@ -36,13 +71,13 @@ describe('Chart', () => {
   });
 
   it('should throw an error when ISINs do not match', () => {
-    const differentIsin = new Isin('GB0009895292');
+    const differentIsin = new Isin('LU2090063327');
     const differentStockData = new StockData(differentIsin, [
       new DataPoint(new Date(1594245600000), new Money(25.75, Currency.EUR)),
     ]);
 
     expect(() => new Chart(differentStockData, isinEvents)).toThrow(
-      `ISIN mismatch: GB0009895292 != LU2090063327`
+      `ISIN mismatch: LU2090063327 != GB0009895292`
     );
   });
 
@@ -73,4 +108,17 @@ describe('Chart', () => {
 
     expect(() => chart.earliestPrice).toThrow('No data points available');
   });
+  
+    it('should convert to JSON', () => {
+      const chart = new Chart(stockData, isinEvents);
+      const json = chart.toJSON();
+  
+      expect(json.isin).toBeDefined();
+      expect(json.stockData).toBeDefined();
+      expect(json.isinEvents).toBeDefined();
+      expect(json.latestPrice).toBeDefined();
+      expect(json.earliestPrice).toBeDefined();
+      expect(json.lowestTotalPriceIncludingCosts).toBeDefined();
+      expect(json.highestTotalPriceIncludingCosts).toBeDefined();
+    });
 });
