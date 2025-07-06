@@ -41,7 +41,11 @@ app.get('/', async (req, res) => {
           .update-button { padding: 8px 16px; background-color: #4CAF50; color: white; border: none; border-radius: 4px; cursor: pointer; }
           .update-button:disabled { background-color: #cccccc; cursor: not-allowed; }
           .error-message { color: red; margin-top: 5px; display: none; }
-          .sidebar { position: fixed; left: 0; top: 10%; width: 300px; height: 100%; background-color: #f8f8f8; padding: 20px; box-shadow: -2px 0 5px rgba(0,0,0,0.1); overflow-y: auto; display: none; }
+          .sidebar { position: fixed; left: 0; top: 0; width: 300px; height: 95%; background-color: #f8f8f8; padding: 20px; box-shadow: -2px 0 5px rgba(0,0,0,0.1); overflow-y: auto; display: none; }
+          .html-table-of-events { 
+            overflow-x: scroll; overflow-y: auto;
+            table { border-collapse: collapse; }
+            table, th, td { border: 1px solid darkblue; }
         </style>
       </head>
       <body>
@@ -54,6 +58,7 @@ app.get('/', async (req, res) => {
 
     // Add a chart container for each ISIN
     for (const chart of charts.all) {
+      
       const isin = chart.isin.value;
       html += `
         <div class="chart-container" id="chart-container-${isin}">
@@ -110,6 +115,17 @@ app.get('/', async (req, res) => {
               const buyEvents = chart.isinEvents.events.filter(e => e.type === 'buy');
               const sellEvents = chart.isinEvents.events.filter(e => e.type === 'sell');
               
+              // events for displaying in sidebar
+              const htmlTableHeaderOfEvents = Object.keys(chart.isinEvents.events[0]).map((key) => '<th>' + key + '</th>');
+              const htmlTableRowsOfEvents = chart.isinEvents.events.map((event) => 
+                '<tr>' 
+                    + Object.values(event).map(
+                      (value) => '<td>' + ((typeof value === 'string') ? value : Object.values(value).join(' ')) + '</td>'
+                      ).join('')
+                    + '</tr>'
+              );
+              const htmlTableOfEvents = '<div class="html-table-of-events"><table><thead>' + htmlTableHeaderOfEvents.join('') + '</thead><tbody>' + htmlTableRowsOfEvents.join('') + '</tbody></table></div>';
+              
               const lowestAmountTotalIncludingCosts = chart.lowestTotalPriceIncludingCosts;
               const highestAmountTotalIncludingCosts = chart.highestTotalPriceIncludingCosts;
 
@@ -142,7 +158,7 @@ app.get('/', async (req, res) => {
                       font: { weight: 'bold' }
                     },
                     click: function() {
-                      showEventDetails(event);
+                      showEventDetails(event, htmlTableOfEvents);
                     }
                   });
                 }
@@ -174,7 +190,7 @@ app.get('/', async (req, res) => {
                       font: { weight: 'bold' }
                     },
                     click: function() {
-                      showEventDetails(event);
+                      showEventDetails(event, htmlTableOfEvents);
                     }
                   });
                 }
@@ -207,7 +223,7 @@ app.get('/', async (req, res) => {
           }
 
           // Function to show event details in sidebar
-          function showEventDetails(event) {
+          function showEventDetails(event, htmlTableOfEvents) {
             const sidebar = document.getElementById('event-sidebar');
             const detailsContainer = document.getElementById('event-details');
 
@@ -222,7 +238,7 @@ app.get('/', async (req, res) => {
               }
               details += '<p><strong>' + key + ':</strong> ' + value + '</p>';
             }
-
+            details += htmlTableOfEvents;
             detailsContainer.innerHTML = details;
             sidebar.style.display = 'block';
           }
