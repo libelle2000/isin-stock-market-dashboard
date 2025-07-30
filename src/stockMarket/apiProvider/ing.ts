@@ -8,6 +8,11 @@ import {Isin} from "../../shared/domainObjects/isin";
 export class Ing implements ApiProvider {
   private readonly baseUrl = 'https://component-api.wertpapiere.ing.de/api/v1/components/charttooldata';
   private readonly queryParams = 'timeRange=Maximum&exchangeId=2779&currencyId=814';
+  
+  private readonly queryParamsByIsin: Record<string, string> = {
+    'DE000A12BSB8': 'timeRange=Maximum&exchangeId=1330&currencyId=814',
+    'LU2145461757': 'timeRange=Maximum&exchangeId=1330&currencyId=814',
+  }
 
   /**
    * Fetches stock data for a given ISIN from the ING API
@@ -17,7 +22,7 @@ export class Ing implements ApiProvider {
    */
   async fetchStockData(isin: Isin): Promise<Record<string, any>> {
     try {
-      const url = `${this.baseUrl}/${isin.value}?${this.queryParams}`;
+      const url = `${this.baseUrl}/${isin.value}?${this.getQueryParamaters(isin)}`;
 
       const response = await fetch(url);
 
@@ -30,5 +35,9 @@ export class Ing implements ApiProvider {
     } catch (error) {
       throw new Error(`Failed to fetch stock data for ISIN ${isin.value}: ${error instanceof Error ? error.message : String(error)}`);
     }
+  }
+
+  private getQueryParamaters(isin: Isin): string {
+    return this.queryParamsByIsin[isin.value] ?? this.queryParams;
   }
 }

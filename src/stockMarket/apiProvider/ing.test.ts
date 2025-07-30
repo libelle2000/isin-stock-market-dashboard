@@ -49,6 +49,41 @@ describe('Ing', () => {
     expect(result).toEqual(mockResponse);
   });
   
+  it('should fetch stock data from a differerent URL for some ISINs', async () => {
+    // Mock response data
+    const mockResponse: StockDataResponse = {
+      instruments: [
+        {
+          keys: ['x', 'y'],
+          data: [
+            [1594245600000, 30.275],
+            [1594332000000, 29.875]
+          ],
+          identifier: '1,53842372,2779,814',
+          currentTimezoneOffset: '7200',
+          timeRange: 'Maximum'
+        }
+      ]
+    };
+    
+    // Mock the fetch response
+    (global.fetch as jest.Mock).mockResolvedValueOnce({
+      ok: true,
+      json: async () => mockResponse
+    });
+    
+    // Call the method
+    const result = await ing.fetchStockData(new Isin('LU2145461757'));
+    
+    // Check that fetch was called with the correct URL
+    expect(global.fetch).toHaveBeenCalledWith(
+      'https://component-api.wertpapiere.ing.de/api/v1/components/charttooldata/LU2145461757?timeRange=Maximum&exchangeId=1330&currencyId=814'
+    );
+    
+    // Check the result
+    expect(result).toEqual(mockResponse);
+  });
+  
   it('should throw an error when the API call fails', async () => {
     // Mock a failed fetch response
     (global.fetch as jest.Mock).mockResolvedValueOnce({
