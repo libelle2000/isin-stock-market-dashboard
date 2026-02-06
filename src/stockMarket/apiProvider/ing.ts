@@ -6,14 +6,13 @@ import {Isin} from "../../shared/domainObjects/isin";
  * Implementation of ApiProvider for the ING API
  */
 export class Ing implements ApiProvider {
-  private readonly baseUrl = 'https://component-api.wertpapiere.ing.de/api/v1/components/charttooldata';
-  private readonly queryParams = 'timeRange=Maximum&exchangeId=2779&currencyId=814';
-  
-  private readonly queryParamsByIsin: Record<string, string> = {
-    'DE000A12BSB8': 'timeRange=Maximum&exchangeId=1330&currencyId=814',
-    'LU2145461757': 'timeRange=Maximum&exchangeId=1330&currencyId=814',
-  }
+  private readonly baseUrl = 'https://component-api.wertpapiere.ing.de/api/v1/charts/charttooldata';
+  private readonly queryParams = 'timeRange=Maximum&exchangeId=2779&exchangeCode=TGT&currencyId=814';
 
+  private readonly queryParamsByIsin: Record<string, string> = {
+    'DE000A12BSB8': 'timeRange=Maximum&exchangeId=1330&exchangeCode=BMN&currencyId=814',
+    'LU2145461757': 'timeRange=Maximum&exchangeId=1330&exchangeCode=BMN&currencyId=814',
+  }
   /**
    * Fetches stock data for a given ISIN from the ING API
    * @param isin The ISIN to fetch data for
