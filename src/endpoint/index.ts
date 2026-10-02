@@ -99,6 +99,13 @@ app.get('/', async (req, res) => {
             // Skaliere auf den gewünschten Radiusbereich
             return minRadius + normalized * (maxRadius - minRadius);
           }
+
+          // Index of the first data point on or after the event's day (e.g. no price data on the trading day)
+          function findDataPointIndexOnOrAfter(timestamps, tradingDateTime) {
+            const eventDay = new Date(tradingDateTime);
+            eventDay.setHours(0, 0, 0, 0);
+            return timestamps.findIndex(timestamp => timestamp >= eventDay.getTime());
+          }
           // Function to initialize charts
           function initializeCharts() {
             const chartsData = ${JSON.stringify(charts)};
@@ -110,6 +117,7 @@ app.get('/', async (req, res) => {
               // Extract data points
               const labels = chart.stockData.dataPoints.map(dp => new Date(dp.timestamp).toLocaleDateString());
               const prices = chart.stockData.dataPoints.map(dp => dp.price.amount);
+              const timestamps = chart.stockData.dataPoints.map(dp => new Date(dp.timestamp).getTime());
 
               // Extract buy/sell events
               const buyEvents = chart.isinEvents.events.filter(e => e.type === 'buy');
@@ -134,7 +142,7 @@ app.get('/', async (req, res) => {
 
               // Add buy events (blue upward triangle)
               for (const event of buyEvents) {
-                const index = labels.indexOf(new Date(event.tradingDate).toLocaleDateString());
+                const index = findDataPointIndexOnOrAfter(timestamps, event.tradingDateTime);
                 if (index !== -1) {
                   annotations.push({
                     type: 'point',
@@ -166,7 +174,7 @@ app.get('/', async (req, res) => {
 
               // Add sell events (red downward triangle)
               for (const event of sellEvents) {
-                const index = labels.indexOf(new Date(event.tradingDate).toLocaleDateString());
+                const index = findDataPointIndexOnOrAfter(timestamps, event.tradingDateTime);
                 if (index !== -1) {
                   annotations.push({
                     type: 'point',
