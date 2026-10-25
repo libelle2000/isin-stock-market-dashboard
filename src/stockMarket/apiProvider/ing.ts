@@ -12,6 +12,7 @@ export class Ing implements ApiProvider {
   private readonly queryParamsByIsin: Record<string, string> = {
     'DE000A12BSB8': 'timeRange=Maximum&exchangeId=1330&exchangeCode=BMN&currencyId=814',
     'LU2145461757': 'timeRange=Maximum&exchangeId=1330&exchangeCode=BMN&currencyId=814',
+    'XD0002747026': 'timeRange=Maximum&exchangeId=178&currencyId=333',
   }
   /**
    * Fetches stock data for a given ISIN from the ING API

@@ -85,7 +85,12 @@ export class StockMarketService {
       // 4.2 Validate the data against the schema
       StockDataSchema.validate(data);
 
-      // 4.3 Update the cache
+      // 4.3 Never overwrite the cache with an empty response
+      if (data.instruments[0].data.length === 0) {
+        throw new Error('API returned no data points (wrong exchange / currency parameters?)');
+      }
+
+      // 4.4 Update the cache
       await StockDataRepository.updateStockDataByIsin(isin, data);
     } catch (error) {
       throw new Error(`Error fetching stock data for ISIN ${isin.value}: ${error instanceof Error ? error.message : String(error)}`);

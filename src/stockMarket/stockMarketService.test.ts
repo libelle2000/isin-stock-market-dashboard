@@ -245,6 +245,19 @@ describe('StockMarketService', () => {
       expect(StockDataRepository.updateStockDataByIsin).toHaveBeenCalledWith(isin1, mockResponse);
     });
     
+    it('should not overwrite the cache when the API returns no data points', async () => {
+      const emptyResponse: StockDataResponse = {
+        instruments: [{ ...mockResponse.instruments[0], data: [] }]
+      };
+      (mockApiProvider.fetchStockData as jest.Mock).mockResolvedValue(emptyResponse);
+
+      await expect(service.fetchStockDataByIsin(isin1)).rejects.toThrow(
+        `Error fetching stock data for ISIN ${isin1.value}: API returned no data points`
+      );
+
+      expect(StockDataRepository.updateStockDataByIsin).not.toHaveBeenCalled();
+    });
+
     it('should throw an error when API call fails', async () => {
       // Mock apiProvider.fetchStockData to throw an error
       (mockApiProvider.fetchStockData as jest.Mock).mockRejectedValue(new Error('API error'));
