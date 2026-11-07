@@ -303,9 +303,12 @@ app.get('/', async (req, res) => {
           async function updateAllStockData() {
             const DELAY_BETWEEN_CALLS_MS = 500;
             const allButton = document.getElementById('update-all-button');
-            const isins = Array.from(document.querySelectorAll('.update-button')).map(b => b.getAttribute('data-isin'));
+            const singleButtons = Array.from(document.querySelectorAll('.update-button'));
+            const isins = singleButtons.map(b => b.getAttribute('data-isin'));
 
+            // Lock the single buttons: a click would run in parallel and reload the page mid-batch
             allButton.disabled = true;
+            singleButtons.forEach(b => { b.disabled = true; });
             const failed = await updateSequentially(
               isins,
               isin => updateStockData(isin, false),
@@ -321,6 +324,7 @@ app.get('/', async (req, res) => {
               // Keep the page so the error messages stay visible
               allButton.textContent = 'Done (' + failed + ' failed)';
               allButton.disabled = false;
+              singleButtons.forEach(b => { b.disabled = false; });
             }
           }
 
