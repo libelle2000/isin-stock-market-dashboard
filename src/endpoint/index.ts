@@ -40,6 +40,9 @@ app.get('/', async (req, res) => {
           .chart-header>* { display: inline-block; }
           .update-button { padding: 8px 16px; background-color: #4CAF50; color: white; border: none; border-radius: 4px; cursor: pointer; }
           .update-button:disabled { background-color: #cccccc; cursor: not-allowed; }
+          .page-header { display: flex; align-items: center; justify-content: space-between; }
+          .update-all-button { padding: 8px 16px; background-color: #4CAF50; color: white; border: none; border-radius: 4px; cursor: pointer; }
+          .update-all-button:disabled { background-color: #cccccc; cursor: not-allowed; }
           .error-message { color: red; margin-top: 5px; display: none; }
           .sidebar { position: fixed; left: 0; top: 0; width: 300px; height: 95%; background-color: #f8f8f8; padding: 20px; box-shadow: -2px 0 5px rgba(0,0,0,0.1); overflow-y: auto; display: none; }
           .html-table-of-events { 
@@ -52,7 +55,10 @@ app.get('/', async (req, res) => {
         <script>
           Chart.register('chartjs-plugin-annotation');
         </script>
-        <h1>ISIN Stock Market Dashboard</h1>
+        <div class="page-header">
+          <h1>ISIN Stock Market Dashboard</h1>
+          <button class="update-all-button" id="update-all-button">Update all</button>
+        </div>
         <div id="charts-container">
     `;
 
@@ -252,7 +258,8 @@ app.get('/', async (req, res) => {
           }
 
           // Function to update stock data for an ISIN
-          async function updateStockData(isin) {
+          // Returns true on success. Reloads the page afterwards unless reloadAfter is false.
+          async function updateStockData(isin, reloadAfter = true) {
             const button = document.querySelector('.update-button[data-isin="' + isin + '"]');
             const errorElement = document.getElementById('error-' + isin);
 
@@ -276,12 +283,43 @@ app.get('/', async (req, res) => {
 
               button.textContent = 'Updated';
               // Reload the page to show updated data
-              setTimeout(() => window.location.reload(), 1000);
+              if (reloadAfter) {
+                setTimeout(() => window.location.reload(), 1000);
+              }
+              return true;
             } catch (error) {
               console.error('Error updating stock data:', error);
               button.textContent = 'Error';
               errorElement.textContent = error.message;
               errorElement.style.display = 'block';
+              return false;
+            }
+          }
+
+          // Update all ISINs one after another, with a pause in between to not overwhelm the ing.de API
+          async function updateAllStockData() {
+            const DELAY_BETWEEN_CALLS_MS = 500;
+            const allButton = document.getElementById('update-all-button');
+            const isins = Array.from(document.querySelectorAll('.update-button')).map(b => b.getAttribute('data-isin'));
+            let failed = 0;
+
+            allButton.disabled = true;
+            for (let i = 0; i < isins.length; i++) {
+              allButton.textContent = 'Updating ' + (i + 1) + ' / ' + isins.length + '...';
+              const ok = await updateStockData(isins[i], false);
+              if (!ok) failed++;
+              if (i < isins.length - 1) {
+                await new Promise(resolve => setTimeout(resolve, DELAY_BETWEEN_CALLS_MS));
+              }
+            }
+
+            if (failed === 0) {
+              allButton.textContent = 'All updated';
+              setTimeout(() => window.location.reload(), 1000);
+            } else {
+              // Keep the page so the error messages stay visible
+              allButton.textContent = 'Done (' + failed + ' failed)';
+              allButton.disabled = false;
             }
           }
 
@@ -294,6 +332,8 @@ app.get('/', async (req, res) => {
                 updateStockData(isin);
               });
             });
+
+            document.getElementById('update-all-button').addEventListener('click', updateAllStockData);
 
             // Close sidebar when clicking outside
             document.addEventListener('click', function(event) {
