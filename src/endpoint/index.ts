@@ -2,6 +2,7 @@ import express from 'express';
 import path from 'path';
 import { StockMarketService } from '../stockMarket/stockMarketService';
 import { updateIsinStockDataRouter } from './updateIsinStockData';
+import { updateSequentially } from './client/updateSequentially';
 
 // Create Express application
 const app = express();
@@ -296,22 +297,22 @@ app.get('/', async (req, res) => {
             }
           }
 
+          ${updateSequentially.toString()}
+
           // Update all ISINs one after another, with a pause in between to not overwhelm the ing.de API
           async function updateAllStockData() {
             const DELAY_BETWEEN_CALLS_MS = 500;
             const allButton = document.getElementById('update-all-button');
             const isins = Array.from(document.querySelectorAll('.update-button')).map(b => b.getAttribute('data-isin'));
-            let failed = 0;
 
             allButton.disabled = true;
-            for (let i = 0; i < isins.length; i++) {
-              allButton.textContent = 'Updating ' + (i + 1) + ' / ' + isins.length + '...';
-              const ok = await updateStockData(isins[i], false);
-              if (!ok) failed++;
-              if (i < isins.length - 1) {
-                await new Promise(resolve => setTimeout(resolve, DELAY_BETWEEN_CALLS_MS));
-              }
-            }
+            const failed = await updateSequentially(
+              isins,
+              isin => updateStockData(isin, false),
+              DELAY_BETWEEN_CALLS_MS,
+              ms => new Promise(resolve => setTimeout(resolve, ms)),
+              (current, total) => { allButton.textContent = 'Updating ' + current + ' / ' + total + '...'; }
+            );
 
             if (failed === 0) {
               allButton.textContent = 'All updated';
